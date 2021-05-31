@@ -70,3 +70,26 @@ endif
 set vb t_vb=
 " オムニ補完
 set completeopt=menuone
+
+"----------------------------------------------------
+" Key Map Assignment
+"----------------------------------------------------
+noremap <S-h>   ^
+noremap <S-l>   $
+"noremap <S-j>   }
+"noremap <S-k>   {
+nnoremap <C-n> :cn<CR>
+nnoremap <C-p> :cp<CR>
+"nnoremap <Leader>j :GtagsCursor<CR>
+"nnoremap <Leader>l :Gtags -f %<CR>
+nnoremap <Leader>a :copen<CR>
+nnoremap <Leader>q :cclose<CR>
+
+nnoremap <silent><Esc><Esc> :<C-u>noh<CR>
+
+"----------------------------------------------------
+" Vim Session
+"----------------------------------------------------
+"au VimLeave * mks! ~/.vim.session
+noremap <Space>= :<C-u>mks! ~/.vim.session<CR>
+noremap <Space>` :<C-u>source ~/.vim.session<CR>

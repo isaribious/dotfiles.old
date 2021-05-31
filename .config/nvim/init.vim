@@ -310,11 +310,6 @@ nnoremap <Leader>q :cclose<CR>
 nnoremap <silent><Esc><Esc> :<C-u>noh<CR>
 
 "----------------------------------------------------
-" GNU GLOBAL(gtags)
-"----------------------------------------------------
-let g:Gtags_Auto_Update = 1
-
-"----------------------------------------------------
 " Vim Session
 "----------------------------------------------------
 "au VimLeave * mks! ~/.vim.session

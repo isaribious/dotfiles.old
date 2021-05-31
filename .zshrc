@@ -1,19 +1,19 @@
 # .zshrc
 #=============================
-# Gloabl environment variable
+# Global environment variable
 #=============================
 export LANG=C
 #export LANG=ja_JP.UTF-8
 export LC_CTYPE=ja_JP.UTF-8
 export XDG_CONFIG_HOME=~/.config
-export NVIM_PYTHON_LOG_FILE=~/.tmp
+export NVIM_PYTHON_LOG_FILE=/tmp
 export NVIM_PYTHON_LOG_LEVEL=DEBUG
 #export PYTHONPATH=/Applications/Xcode.app/Contents/SharedFrameworks/LLDB.framework/Resources/Python
 export GTAGSLABEL=pygments
-export GOPATH=$HOME/go
+export GOPATH=~/go
 #export GOROOT=/usr/local/go
 export GREP_COLOR="1;33"
-export RIPGREP_CONFIG_PATH=~/.ripgrep
+export RIPGREP_CONFIG_PATH=~/.ripgreprc
 export FZF_DEFAULT_COMMAND='rg --hidden -l ""'
 export FZF_DEFAULT_OPTS="--height 50% --layout=reverse --border --inline-info --preview 'head -100 {}'"
 #export FZF_DEFAULT_OPTS="--height 50% --layout=reverse --border"
@@ -25,7 +25,7 @@ export PATH
 #set path=($path /usr/local/bin /opt/local/bin /opt/local/sbin ~/bin)
 
 #=============================
-# Gloabl alias
+# Global alias
 #=============================
 #alias ls='ls -GFv'
 alias ls='ls -Fv'
@@ -40,6 +40,7 @@ alias grep='grep --color=auto'
 alias vi='nvim'
 alias py='python3'
 alias h='history'
+alias tree='tree -nF --charset=C'
 alias color='echo; for c in {000..255}; do echo -n "\e[38;5;${c}m $c" ; [ $(($c%16)) -eq 15 ] && echo;done;echo;'
 
 #alias x='xterm -geometry 100x30'
@@ -68,26 +69,15 @@ myprompt(){
         # sets title to running process
         preexec () { print -Pn "\e]1;$1\a" ; print -Pn "\e]2;%n@%m %~ : $1\a" }
         # set prompt
-        #PS1="$RED%1c $BLACK%# "
-        #PROMPT='%B%F{cyan}%n@%m%f (%*) %2~%b $ '
-        #PROMPT='%B%F{cyan}%n@%m%f (%*) %(4~|%1>>%-1~%<<.../%2~|%~)%b %(!.#.$) '
         PROMPT='
 %B%F{144}%n@%m%f %F{246}(%*) %~%f%b
 %(!.#.>) '
-        # PROMPT="%(?.%{${fg[green]}%}.%{${fg[red]}%})%n${reset_color}@${fg[blue]}%m${reset_color}(%*%) %~
-        # > "
-        # PROMPT="
-        # %*
-        # %F{green}%n@%m%f:%F{blue}[%02~]%f
-        # > "
     else
         # sets the title to cwd
         precmd () { print -Pn "\e]1;%m%~\a" ; print -Pn "\e]2;%~\a" }
         # sets title to running process
         preexec () { print -Pn "\e]1;%m$1\a" ; print -Pn "\e]2;%~[$1]\a" }
         # set prompt
-        #PS1="[$GREEN%n$BLACK@$GREEN%m$BLACK] $RED%1c $BLACK%# "
-        #PROMPT='%B%F{white}%n@%m%f (%*) %2~%F{white}%f%b $ '
         PROMPT='
 %B%F{254}%n@%m%f %F{246}(%*) %~%f%b
 %(!.#.>) '
@@ -98,6 +88,11 @@ myprompt
 # git ブランチ名を色付きで表示させるメソッド
 function rprompt-git-current-branch {
   local branch_name st branch_status
+
+  local green="156"
+  local red="210"
+  local yellow="222"
+  local blue="038"
  
   if [ ! -e  ".git" ]; then
     # git 管理されていないディレクトリは何も返さない
@@ -107,23 +102,23 @@ function rprompt-git-current-branch {
   st=`git status 2> /dev/null`
   if [[ -n `echo "$st" | grep "^nothing to"` ]]; then
     # 全て commit されてクリーンな状態
-    branch_status="%F{green}"
+    branch_status="%F{${green}}"
   elif [[ -n `echo "$st" | grep "^Untracked files"` ]]; then
     # git 管理されていないファイルがある状態
-    branch_status="%F{red}?"
+    branch_status="%F{${red}}?"
   elif [[ -n `echo "$st" | grep "^Changes not staged for commit"` ]]; then
     # git add されていないファイルがある状態
-    branch_status="%F{red}+"
+    branch_status="%F{${red}}+"
   elif [[ -n `echo "$st" | grep "^Changes to be committed"` ]]; then
     # git commit されていないファイルがある状態
-    branch_status="%F{yellow}!"
+    branch_status="%F{${yellow}}!"
   elif [[ -n `echo "$st" | grep "^rebase in progress"` ]]; then
     # コンフリクトが起こった状態
-    echo "%F{red}!(no branch)"
+    echo "%F{${red}}!(no branch)"
     return
   else
     # 上記以外の状態の場合
-    branch_status="%F{blue}"
+    branch_status="%F{${blue}}"
   fi
   # ブランチ名を色付きで表示する
   echo "${branch_status}[$branch_name]"
