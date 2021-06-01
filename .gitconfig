@@ -1,8 +1,8 @@
 [user]
-	email = xxxx@xxxx.xxx
-	name = XXXX XXXX
+    email = xxxx@xxxx.xxx
+    name = XXXX XXXX
 [color]
-	ui = auto
+    ui = auto
 [color "status"]
     added = 222      # yellow
     changed = 210    # red
