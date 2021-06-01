@@ -141,7 +141,7 @@ export SAVEHIST=1000
 # Completion
 #=============================
 autoload -Uz compinit
-compinit -u
+compinit -u -d ~/.cache/zsh/zcompdump-$ZSH_VERSION
 zstyle ':completion:*:default' menu select=3
 
 #=============================
