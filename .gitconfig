@@ -1,0 +1,17 @@
+[user]
+	email = xxxx@xxxx.xxx
+	name = XXXX XXXX
+[color]
+	ui = auto
+[color "status"]
+    added = 222      # yellow
+    changed = 210    # red
+    untracked = 210  # red
+    deleted = 038    # blue
+[color "diff"]
+    new = 156   # green
+    old = 210   # red
+    frag = 158  # light green
+[color "grep"]
+    match = 220           # yellow
+    separator = bold 021  # blue
