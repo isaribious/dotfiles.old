@@ -100,14 +100,15 @@ let s:palette.gui.darkblue   = { 'dark' : "#00005f", 'light' : "#d7ffd7" }
 let s:palette.gui.darkcyan   = { 'dark' : "#005f5f", 'light' : "#005f00" }
 let s:palette.gui.darkred    = { 'dark' : "#5f0000", 'light' : "#d7d7ff" }
 let s:palette.gui.darkpurple = { 'dark' : "#5f005f", 'light' : "#5f005f" }
+let s:palette.gui.diff       = { 'dark' : "#f0c674", 'light' : "#5f5f00" } "Add
 
 let s:palette.cterm.background = { 'dark' : "235", 'light' : "254" } "dark:234
 let s:palette.cterm.window     = { 'dark' : "236", 'light' : "247" }
 let s:palette.cterm.darkcolumn = { 'dark' : "235", 'light' : "244" } "dark:234
 let s:palette.cterm.addbg      = { 'dark' : "65" , 'light' : "194" }
 let s:palette.cterm.addfg      = { 'dark' : "193", 'light' : "22"  }
-let s:palette.cterm.changebg   = { 'dark' : "60" , 'light' : "189" }
-let s:palette.cterm.changefg   = { 'dark' : "189", 'light' : "53"  }
+let s:palette.cterm.changebg   = { 'dark' : "138" , 'light' : "189" } "dark:60/138
+let s:palette.cterm.changefg   = { 'dark' : "224", 'light' : "53"  } "dark:189/224
 let s:palette.cterm.darkblue   = { 'dark' : "17",  'light' : "194" }
 let s:palette.cterm.darkcyan   = { 'dark' : "24",  'light' : "22" }
 let s:palette.cterm.darkred    = { 'dark' : "52",  'light' : "189" }
@@ -133,7 +134,7 @@ else
   let s:palette.cterm.comment    = { 'dark' : "243" } "243
   let s:palette.cterm.red        = { 'dark' : "131" } "167
   let s:palette.cterm.peach      = { 'dark' : "181" } "Add 181/138
-  let s:palette.cterm.orange     = { 'dark' : "173" } "173 freshorange 210
+  let s:palette.cterm.orange     = { 'dark' : "210" } "173 freshorange 210
   let s:palette.cterm.yellow     = { 'dark' : "221" }
   let s:palette.cterm.gold       = { 'dark' : "178" } "Add 179
   let s:palette.cterm.brawn      = { 'dark' : "137" } "Add 137
@@ -142,7 +143,8 @@ else
   let s:palette.cterm.aqua       = { 'dark' : "109" }
   let s:palette.cterm.blue       = { 'dark' : "66"  } "110
   let s:palette.cterm.purple     = { 'dark' : "139" }
-  let s:palette.cterm.delbg      = { 'dark' : "167" }
+  let s:palette.cterm.delbg      = { 'dark' : "246" } "167
+  let s:palette.cterm.diff       = { 'dark' : "167" } "Add
 endif
 
 let s:palette.cterm.foreground.light = "16"
@@ -206,6 +208,7 @@ call s:build_prim('bg', 'addfg')
 call s:build_prim('bg', 'changebg')
 call s:build_prim('bg', 'changefg')
 call s:build_prim('bg', 'delbg')
+call s:build_prim('bg', 'diff')  "Add
 call s:build_prim('bg', 'darkblue')
 call s:build_prim('bg', 'darkcyan')
 call s:build_prim('bg', 'darkred')
@@ -238,6 +241,7 @@ call s:build_prim('fg', 'darkblue')
 call s:build_prim('fg', 'darkcyan')
 call s:build_prim('fg', 'darkred')
 call s:build_prim('fg', 'darkpurple')
+call s:build_prim('fg', 'diff')  "Add
 
 exe "let s:fmt_none = ' gui=NONE".          " cterm=NONE".          " term=NONE"        ."'"
 exe "let s:fmt_bold = ' gui=NONE".s:b.      " cterm=NONE".s:b.      " term=NONE".s:b    ."'"
@@ -287,7 +291,7 @@ exe "hi! Directory"     .s:fg_blue        .s:bg_none        .s:fmt_none
 exe "hi! DiffAdd"       .s:fg_addfg       .s:bg_addbg       .s:fmt_none
 exe "hi! DiffChange"    .s:fg_changefg    .s:bg_changebg    .s:fmt_none
 exe "hi! DiffDelete"    .s:fg_background  .s:bg_delbg       .s:fmt_none
-exe "hi! DiffText"      .s:fg_background  .s:bg_blue        .s:fmt_none
+exe "hi! DiffText"      .s:fg_changefg    .s:bg_diff        .s:fmt_none
 exe "hi! ErrorMsg"      .s:fg_background  .s:bg_red         .s:fmt_stnd
 exe "hi! VertSplit"     .s:fg_window      .s:bg_none        .s:fmt_none
 exe "hi! Folded"        .s:fg_comment     .s:bg_darkcolumn  .s:fmt_none
@@ -375,7 +379,7 @@ exe "hi! Underlined"      .s:fg_blue        .s:bg_none        .s:fmt_none
 
 exe "hi! Ignore"          .s:fg_none        .s:bg_none        .s:fmt_none
 
-exe "hi! Error"           .s:fg_red         .s:bg_darkred     .s:fmt_undr
+exe "hi! Error"           .s:fg_orange      .s:bg_darkred     .s:fmt_undr
 
 exe "hi! Todo"            .s:fg_addfg       .s:bg_none        .s:fmt_bold
 
