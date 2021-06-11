@@ -114,7 +114,7 @@ set backspace=2
 set mouse=a
 
 " Copy&Past
-set clipboard+=unnamedplus
+set clipboard+=unnamed,unnamedplus
 "" For Neovim Bug (* Rectangle Past is not working.)
 "map p <Plug>(miniyank-autoput)
 "map P <Plug>(miniyank-autoPut)
