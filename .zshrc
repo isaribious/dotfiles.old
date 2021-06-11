@@ -27,6 +27,11 @@ export PATH
 #=============================
 # Global alias
 #=============================
+close(){
+    pidof xclip | xargs kill -9 &> /dev/null
+    [ $? = 0 ] && exit
+}
+
 #alias ls='ls -GFv'
 alias ls='ls -Fv'
 alias la='ls -a'
