@@ -163,6 +163,7 @@ bindkey '^F' forward-word
 bindkey '^Y' kill-word
 bindkey '^G' kill-line 
 bindkey '^O' reverse-menu-complete
+bindkey '^T' push-line
 
 #=============================
 # Misc
