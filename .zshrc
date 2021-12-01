@@ -15,14 +15,20 @@ export GOPATH=~/go
 export GREP_COLOR="1;33"
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
 export FZF_DEFAULT_COMMAND='rg --hidden -l ""'
-export FZF_DEFAULT_OPTS="--height 50% --layout=reverse --border --inline-info --preview 'head -100 {}'"
+export FZF_DEFAULT_OPTS="--height 50% --layout=default --border --inline-info --preview 'head -100 {}'"
 #export FZF_DEFAULT_OPTS="--height 50% --layout=reverse --border"
+export EDITOR='lvim'
 
 #PATH= .:$PATH
-#PATH=/usr/local/go/bin:$PATH
-PATH=$GOPATH/bin:$PATH
+PATH=$PATH:~/.local/bin
+#PATH=$PATH:/usr/local/go/bin
+PATH=$PATH:${GOPATH}/bin
+PATH=$PATH:/usr/lib/dart/bin
+PATH=$PATH:~/.pub-cache/bin
 export PATH
 #set path=($path /usr/local/bin /opt/local/bin /opt/local/sbin ~/bin)
+
+export DISPLAY=192.168.2.101:0
 
 #=============================
 # Global alias
@@ -42,11 +48,12 @@ alias rm='rm -i'
 alias dirs='dirs -v'
 alias md='mkdir'
 alias grep='grep --color=auto'
-alias vi='nvim'
+alias vi='lvim'
 alias py='python3'
 alias h='history'
 alias tree='tree -nF --charset=C'
 alias color='echo; for c in {000..255}; do echo -n "\e[38;5;${c}m $c" ; [ $(($c%16)) -eq 15 ] && echo;done;echo;'
+alias open='explorer.exe'
 
 #alias x='xterm -geometry 100x30'
 #alias ag='ag --nocolor' 
@@ -160,10 +167,16 @@ zstyle ':completion:*:default' menu select=3
 #bindkey '^W^F' forward-word
 bindkey '^B' backward-word
 bindkey '^F' forward-word
+bindkey '^[h' backward-word
+bindkey '^[l' forward-word
 bindkey '^Y' kill-word
 bindkey '^G' kill-line 
 bindkey '^O' reverse-menu-complete
 bindkey '^T' push-line
+bindkey '^H' backward-char
+bindkey '^J' down-line-or-history
+bindkey '^K' up-line-or-history
+bindkey '^L' forward-char
 
 #=============================
 # Misc
