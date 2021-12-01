@@ -210,9 +210,21 @@ vim.cmd([[
 
 -- Telescope
 vim.cmd([[
-  nnoremap <silent><Leader>f :Telescope find_files<CR>
+  nnoremap <silent>ff :Telescope find_files prompt_prefix=🔍<CR>
+  nnoremap <silent>fd :Telescope find_files find_command=rg,--ignore,--hidden,--files prompt_prefix=🔍<CR>
+  nnoremap f<Space> :Telescope find_files prompt_prefix=🔍 search_dirs=
   nnoremap <silent><Leader>g :Telescope live_grep<CR>
   nnoremap <silent>\\ :Telescope buffers<CR>
+
+  command! -nargs=1 FF call Find_files(<f-args>)
+  command! -nargs=1 FD call Find_dotfiles(<f-args>)
+
+  function! Find_files(path)
+    exec 'Telescope find_files prompt_prefix=🔍 find_command=rg,--files,' . expand(a:path)
+  endfunction
+  function! Find_dotfiles(path)
+    exec 'Telescope find_files prompt_prefix=🔍 find_command=rg,--ignore,--hidden,--files,' . expand(a:path)
+  endfunction
 ]])
 
 ---------------------------------------------------------------------
@@ -258,13 +270,15 @@ lvim.builtin.telescope.defaults.mappings = {
   i = {
     ["<C-j>"] = "move_selection_next",
     ["<C-k>"] = "move_selection_previous",
-    ["<C-n>"] = "cycle_history_next",
-    ["<C-p>"] = "cycle_history_prev",
+    ["<C-d>"] = "cycle_history_next",
+    ["<C-u>"] = "cycle_history_prev",
+    ["<CR>"] = "select_tab",
   },
   -- for normal mode
   n = {
     ["<C-j>"] = "move_selection_next",
     ["<C-k>"] = "move_selection_previous",
+    ["<CR>"] = "select_tab",
   },
 }
 
@@ -285,6 +299,13 @@ lvim.builtin.telescope.defaults.mappings = {
 lvim.builtin.which_key.mappings.c = nil
 lvim.builtin.which_key.mappings.h = nil
 lvim.builtin.which_key.mappings.q = nil
+
+---------------------------------------------------------------------
+-- Project
+---------------------------------------------------------------------
+lvim.builtin.project.manual_mode = true
+lvim.builtin.project.show_hidden = true
+lvim.builtin.project.silent_chdir = false
 
 ---------------------------------------------------------------------
 -- Treesitter
