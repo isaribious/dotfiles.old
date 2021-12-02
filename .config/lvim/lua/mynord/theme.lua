@@ -5,8 +5,7 @@ local theme = {}
 theme.loadSyntax = function ()
     -- Syntax highlight groups
   local syntax = {
-    -- Type =           { fg = nord.nord9_gui }, -- int, long, char, etc.
-    Type =           { fg = nord.nord13_gui }, -- int, long, char, etc.
+    Type =           { fg = nord.nord9_gui }, -- int, long, char, etc.
     StorageClass =   { fg = nord.nord9_gui }, -- static, register, volatile, etc.
     Structure =      { fg = nord.nord9_gui }, -- struct, union, enum, etc.
     Constant =       { fg = nord.nord4_gui }, -- any constant
@@ -93,14 +92,14 @@ theme.loadEditor = function ()
     ErrorMsg =         { fg = nord.none },
     Folded =           { fg = nord.nord_3_gui_bright, nord.none, style = 'italic' },
     FoldColumn =       { fg = nord.nord7_gui },
-    -- IncSearch =        { fg = nord.nord6_gui, bg = nord.nord10_gui },
     IncSearch =        { fg = nord.nord6_gui, bg = nord.nord10_gui },
     LineNr =           { fg = nord.nord3_gui_bright },
     CursorLineNr =     { fg = nord.nord4_gui },
     MatchParen =       { fg = nord.nord15_gui, bg = nord.none, style = 'bold' },
     ModeMsg =          { fg = nord.nord4_gui },
     MoreMsg =          { fg = nord.nord4_gui },
-    NonText =          { fg = nord.nord1_gui },
+    -- NonText =          { fg = nord.nord1_gui },
+    NonText =          { fg = nord.nord3_gui_bright },
     Pmenu =            { fg = nord.nord4_gui, bg = nord.nord2_gui },
     PmenuSel =         { fg = nord.nord4_gui, bg = nord.nord10_gui },
     PmenuSbar =        { fg = nord.nord4_gui, bg = nord.nord2_gui },
@@ -226,15 +225,16 @@ theme.loadTreeSitter = function ()
     -- TSProperty =          { fg = nord.nord10_gui }, -- Same as `TSField`.
     TSProperty =          { fg = nord.nord4_gui }, -- Same as `TSField`.
     TSPunctDelimiter =    { fg = nord.nord8_gui }, -- For delimiters ie: `.`
-    TSPunctBracket =      { fg = nord.nord8_gui }, -- For brackets and parens.
+    -- TSPunctBracket =      { fg = nord.nord8_gui }, -- For brackets and parens.
+    TSPunctBracket =      { fg = nord.nord4_gui }, -- For brackets and parens.
     TSPunctSpecial =      { fg = nord.nord8_gui }, -- For special punctutation that does not fall in the catagories before.
     TSStringRegex =       { fg = nord.nord7_gui }, -- For regexes.
     TSStringEscape =      { fg = nord.nord15_gui }, -- For escape characters within a string.
     TSSymbol =            { fg = nord.nord15_gui },    -- For identifiers referring to symbols or atoms.
     -- TSType =              { fg = nord.nord9_gui},    -- For types.
-    TSType =              { fg = nord.nord13_gui},    -- For types.
+    TSType =              { fg = nord.nord7_gui},    -- For types.
     -- TSTypeBuiltin =       { fg = nord.nord9_gui},    -- For builtin types.
-    TSTypeBuiltin =       { fg = nord.nord13_gui},    -- For builtin types.
+    TSTypeBuiltin =       { fg = nord.nord7_gui},    -- For builtin types.
     TSTag =               { fg = nord.nord4_gui },    -- Tags like html tag names.
     TSTagDelimiter =      { fg = nord.nord15_gui },    -- Tag delimiter like `<` `>` `/`
     TSText =              { fg = nord.nord4_gui },    -- For strings considenord11_gui text in a markup language.
@@ -253,9 +253,9 @@ theme.loadTreeSitter = function ()
   treesitter.TSRepeat =          { fg = nord.nord9_gui }    -- For keywords related to loops.
   -- treesitter.TSKeywordFunction = { fg = nord.nord8_gui }
   treesitter.TSKeywordFunction = { fg = nord.nord9_gui }
-  -- treesitter.TSFunction =        { fg = nord.nord8_gui }    -- For fuction (calls and definitions).
-  treesitter.TSFunction =        { fg = nord.nord7_gui }    -- For fuction (calls and definitions).
-  treesitter.TSMethod =          { fg = nord.nord7_gui }    -- For method calls and definitions.
+  treesitter.TSFunction =        { fg = nord.nord8_gui }    -- For fuction (calls and definitions).
+  -- treesitter.TSMethod =          { fg = nord.nord7_gui }    -- For method calls and definitions.
+  treesitter.TSMethod =          { fg = nord.nord8_gui }    -- For method calls and definitions.
   treesitter.TSFuncBuiltin =     { fg = nord.nord8_gui }
   treesitter.TSVariable =        { fg = nord.nord4_gui }-- Any variable name that does not have another highlight.
   treesitter.TSVariableBuiltin = { fg = nord.nord4_gui }
@@ -366,7 +366,7 @@ theme.loadPlugins = function()
     TelescopePreviewBorder =  { fg = nord.nord14_gui },
     TelescopeSelectionCaret = { fg = nord.nord9_gui },
     -- TelescopeSelection =      { fg = nord.nord9_gui },
-    TelescopeSelection =      { fg = nord.nord8_gui },
+    TelescopeSelection =      { fg = nord.nord8_gui, bg = nord.nord0_gui },
     -- TelescopeMatching =       { fg = nord.nord8_gui },
     TelescopeMatching =       { fg = nord.nord13_gui },
 

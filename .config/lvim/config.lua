@@ -57,7 +57,6 @@ vim.opt.inccommand = "split" -- incremental substitution (neovim)
 lvim.log.level = "warn"
 lvim.format_on_save = true
 -- lvim.colorscheme = "onedarker"
--- lvim.colorscheme = "mynord"
 lvim.colorscheme = "mynord"
 lvim.transparent_window = true
 lvim.line_wrap_cursor_movement = false
@@ -519,9 +518,11 @@ lvim.autocommands.colorscheme = {
   { "ColorScheme", "*", "highlight CursorLineNr ctermbg=none guifg=#777777 guibg=none" },
   { "ColorScheme", "*", "highlight CursorLine ctermbg=none guifg=none guibg=#3b4451" },
   { "ColorScheme", "*", "highlight Comment ctermbg=none guifg=#777777 guibg=none" },
+  { "ColorScheme", "*", "highlight TSComment ctermbg=none guifg=#777777 guibg=none" },
   { "ColorScheme", "*", "highlight Visual ctermbg=none guifg=none guibg=#5c6168" },
   { "ColorScheme", "*", "highlight IncSearch ctermbg=none guifg=#ffffff guibg=#ff2255"},
   { "ColorScheme", "*", "highlight Search ctermbg=none guifg=#3b4252 guibg=#ebcb8b" },
+  { "ColorScheme", "*", "highlight MatchParen ctermbg=none guifg=#ff6a6a guibg=#777777" },
 }
 lvim.autocommands.indent = {
   { "BufWinEnter", "*.lua", "setlocal ts=2 sw=2" },
