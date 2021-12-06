@@ -209,21 +209,22 @@ vim.cmd([[
 
 -- Telescope
 vim.cmd([[
-  nnoremap <silent>ff :Telescope find_files prompt_prefix=🔍<CR>
-  nnoremap <silent>fd :Telescope find_files find_command=rg,--ignore,--hidden,--files prompt_prefix=🔍<CR>
-  nnoremap f<Space> :Telescope find_files prompt_prefix=🔍 search_dirs=
-  nnoremap <silent><Leader>g :Telescope live_grep<CR>
+  nnoremap <silent><Leader>f :Telescope find_files prompt_prefix=🔍<CR>
+  nnoremap <silent><Leader>h :Telescope find_files find_command=rg,--ignore,--hidden,--files prompt_prefix=🔍<CR>
+  nnoremap <silent><Leader>g :Telescope live_grep file_command=rg,--column,--line-number,--no-heading,--hidden,--smart-case,.+<CR>
   nnoremap <silent>\\ :Telescope buffers<CR>
+  nnoremap <silent>gf :Telescope git_files<CR>
+  nnoremap <silent>gs :Telescope git_status<CR>
+  nnoremap <silent>gb :Telescope git_branches<CR>
+  nnoremap <silent>gc :Telescope git_commits<CR>
+]])
 
-  command! -nargs=1 FF call Find_files(<f-args>)
-  command! -nargs=1 FD call Find_dotfiles(<f-args>)
-
-  function! Find_files(path)
-    exec 'Telescope find_files prompt_prefix=🔍 find_command=rg,--files,' . expand(a:path)
-  endfunction
-  function! Find_dotfiles(path)
-    exec 'Telescope find_files prompt_prefix=🔍 find_command=rg,--ignore,--hidden,--files,' . expand(a:path)
-  endfunction
+-- Fuzzy Finder
+vim.cmd([[
+  nnoremap <silent> ;F :Files<CR>
+  nnoremap <silent> ;G :Rg<CR>
+  nnoremap FF :Files 
+  nnoremap FG :Rg 
 ]])
 
 ---------------------------------------------------------------------
@@ -231,19 +232,19 @@ vim.cmd([[
 ---------------------------------------------------------------------
 -- Additional Plugins
 lvim.plugins = {
-    {'arcticicestudio/nord-vim'},
-    {'shaunsingh/nord.nvim'},
-    {'edeneast/nightfox.nvim'},
-    {'itchyny/lightline.vim'},
-    {'folke/tokyonight.nvim'},
-    {
-      "folke/trouble.nvim",
-      cmd = "TroubleToggle",
-    },
-    {'tpope/vim-commentary'},
-    {'ray-x/lsp_signature.nvim'},
-    {'norcalli/nvim-colorizer.lua'},
-    {'dart-lang/dart-vim-plugin'},
+  {'arcticicestudio/nord-vim'},
+  {'shaunsingh/nord.nvim'},
+  {'edeneast/nightfox.nvim'},
+  {'itchyny/lightline.vim'},
+  {'folke/tokyonight.nvim'},
+  {'jdkanani/vim-material-theme'},
+  {'folke/trouble.nvim', cmd = 'TroubleToggle'},
+  {'tpope/vim-commentary'},
+  {'ray-x/lsp_signature.nvim'},
+  {'norcalli/nvim-colorizer.lua'},
+  {'dart-lang/dart-vim-plugin'},
+  {'junegunn/fzf', dir = '~/.fzf', run = './install --all'},
+  {'junegunn/fzf.vim'},
 }
 
 ---------------------------------------------------------------------
@@ -257,6 +258,7 @@ lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.show_icons.git = 0
 lvim.builtin.lualine.active = false
 lvim.builtin.bufferline.active = false
+lvim.builtin.telescope.active = true
 
 ---------------------------------------------------------------------
 -- Telescope
@@ -269,9 +271,10 @@ lvim.builtin.telescope.defaults.mappings = {
   i = {
     ["<C-j>"] = "move_selection_next",
     ["<C-k>"] = "move_selection_previous",
-    ["<C-d>"] = "cycle_history_next",
-    ["<C-u>"] = "cycle_history_prev",
+    -- ["<C-d>"] = "cycle_history_next",
+    -- ["<C-u>"] = "cycle_history_prev",
     ["<CR>"] = "select_tab",
+    ["<C-l>"] = false,
   },
   -- for normal mode
   n = {
@@ -478,6 +481,41 @@ vim.cmd([[
       \}
 ]])
 
+---------------------------------------------------------------------
+-- Fuzzy Finder
+---------------------------------------------------------------------
+vim.cmd([[
+  let $FZF_DEFAULT_COMMAND="rg --files --hidden"
+
+  let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.85 } }
+  let g:fzf_preview_window = ['right:56%', 'ctrl-/']
+  let g:fzf_action = {
+    \ 'enter': 'tab drop',
+    \ 'ctrl-o': 'edit',
+    \ 'ctrl-s': 'split',
+    \ 'ctrl-v': 'vsplit' }
+  let g:fzf_colors =
+  \ { 'fg':      ['fg', 'Normal'],
+    \ 'bg':      ['bg', 'Normal'],
+    \ 'hl':      ['fg', 'TelescopeMatching'],
+    \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+    \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+    \ 'hl+':     ['fg', 'Statement'],
+    \ 'info':    ['fg', 'PreProc'],
+    \ 'prompt':  ['fg', 'Conditional'],
+    \ 'pointer': ['fg', 'Exception'],
+    \ 'marker':  ['fg', 'Keyword'],
+    \ 'spinner': ['fg', 'Label'],
+    \ 'header':  ['fg', 'Comment'] }
+
+    command! -bang -nargs=* Rg
+      \ call fzf#vim#grep(
+      \   "rg --column --line-number --no-heading --hidden --smart-case .+",
+      \   1,
+      \   fzf#vim#with_preview(),
+      \   0,
+      \ )
+]])
 
 ---------------------------------------------------------------------
 -- Dart
@@ -512,8 +550,8 @@ lvim.autocommands.import = {
   { "BufWritePre", "*.go", "lua goimports(1000)"},
 }
 lvim.autocommands.colorscheme = {
-  { "ColorScheme", "*", "highlight Normal ctermbg=none guibg=none" },
-  { "ColorScheme", "*", "highlight SignColumn ctermbg=none guibg=none" },
+  -- { "ColorScheme", "*", "highlight Normal ctermbg=none guibg=#none" },
+  -- { "ColorScheme", "*", "highlight SignColumn ctermbg=none guibg=none" },
   { "ColorScheme", "*", "highlight LineNr ctermbg=none guifg=#777777 guibg=none" },
   { "ColorScheme", "*", "highlight CursorLineNr ctermbg=none guifg=#777777 guibg=none" },
   { "ColorScheme", "*", "highlight CursorLine ctermbg=none guifg=none guibg=#3b4451" },
