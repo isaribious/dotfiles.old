@@ -209,10 +209,10 @@ vim.cmd([[
 
 -- Telescope
 vim.cmd([[
-  nnoremap <silent><Leader>f :Telescope find_files prompt_prefix=🔍<CR>
-  nnoremap <silent><Leader>h :Telescope find_files find_command=rg,--ignore,--hidden,--files prompt_prefix=🔍<CR>
-  nnoremap <silent><Leader>g :Telescope live_grep file_command=rg,--column,--line-number,--no-heading,--hidden,--smart-case,.+<CR>
-  nnoremap <silent>\\ :Telescope buffers<CR>
+  nnoremap <silent>;F :Telescope find_files prompt_prefix=🔍<CR>
+  nnoremap <silent>;H :Telescope find_files find_command=rg,--ignore,--hidden,--files prompt_prefix=🔍<CR>
+  nnoremap <silent>;G :Telescope live_grep file_command=rg,--column,--line-number,--no-heading,--hidden,--smart-case,.+<CR>
+  nnoremap <silent>;\ :Telescope buffers<CR>
   nnoremap <silent>gf :Telescope git_files<CR>
   nnoremap <silent>gs :Telescope git_status<CR>
   nnoremap <silent>gb :Telescope git_branches<CR>
@@ -221,8 +221,9 @@ vim.cmd([[
 
 -- Fuzzy Finder
 vim.cmd([[
-  nnoremap <silent> ;F :Files<CR>
-  nnoremap <silent> ;G :Rg<CR>
+  nnoremap <silent> <Leader>f :Files<CR>
+  nnoremap <silent> <Leader>g :Rg<CR>
+  nnoremap <silent> \\ :Buffers<CR>
   nnoremap FF :Files 
   nnoremap FG :Rg 
 ]])
@@ -273,14 +274,14 @@ lvim.builtin.telescope.defaults.mappings = {
     ["<C-k>"] = "move_selection_previous",
     -- ["<C-d>"] = "cycle_history_next",
     -- ["<C-u>"] = "cycle_history_prev",
-    ["<CR>"] = "select_tab",
+    -- ["<CR>"] = "select_tab",
     ["<C-l>"] = false,
   },
   -- for normal mode
   n = {
     ["<C-j>"] = "move_selection_next",
     ["<C-k>"] = "move_selection_previous",
-    ["<CR>"] = "select_tab",
+    -- ["<CR>"] = "select_tab",
   },
 }
 
@@ -491,7 +492,7 @@ vim.cmd([[
   let g:fzf_preview_window = ['right:56%', 'ctrl-/']
   let g:fzf_action = {
     \ 'enter': 'tab drop',
-    \ 'ctrl-o': 'edit',
+    \ 'ctrl-e': 'edit',
     \ 'ctrl-s': 'split',
     \ 'ctrl-v': 'vsplit' }
   let g:fzf_colors =
@@ -569,3 +570,8 @@ lvim.autocommands.indent = {
   { "BufWinEnter", "*.css", "setlocal ts=2 sw=2" },
   { "BufWinEnter", "*.dart", "setlocal ts=2 sw=2" },
 }
+
+---------------------------------------------------------------------
+-- Mynord
+---------------------------------------------------------------------
+vim.g.nord_borders = true
