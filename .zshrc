@@ -2,9 +2,9 @@
 #=============================
 # Global environment variable
 #=============================
-export LANG=C
+#export LANG=C
 #export LANG=ja_JP.UTF-8
-export LC_CTYPE=ja_JP.UTF-8
+#export LC_CTYPE=ja_JP.UTF-8
 export XDG_CONFIG_HOME=~/.config
 export NVIM_PYTHON_LOG_FILE=/tmp
 export NVIM_PYTHON_LOG_LEVEL=DEBUG
@@ -15,7 +15,8 @@ export GOPATH=~/go
 export GREP_COLOR="1;33"
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
 export FZF_DEFAULT_COMMAND='rg --hidden -l ""'
-export FZF_DEFAULT_OPTS="--height 50% --layout=default --border --inline-info --preview 'head -100 {}'"
+export FZF_DEFAULT_OPTS="--height 50% --layout=default --border --inline-info --preview 'head -100 {}' \
+    --bind=ctrl-d:preview-half-page-down,ctrl-u:preview-half-page-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up"
 #export FZF_DEFAULT_OPTS="--height 50% --layout=reverse --border"
 export EDITOR='lvim'
 
@@ -53,7 +54,10 @@ alias py='python3'
 alias h='history'
 alias tree='tree -nF --charset=C'
 alias color='echo; for c in {000..255}; do echo -n "\e[38;5;${c}m $c" ; [ $(($c%16)) -eq 15 ] && echo;done;echo;'
-alias open='explorer.exe'
+alias home='cd "/mnt/c/Users/ShimauchiDaisuke"'
+alias open='/mnt/c/Windows/explorer.exe'
+alias kh='vi "/mnt/c/Users/ShimauchiDaisuke/OneDrive - Bugless Co., Ltd/download/keyhac_182/config.py"'
+alias pf='vi "/mnt/c/Users/ShimauchiDaisuke/TaskSchedule/port-forwarding.ps1"'
 
 #alias x='xterm -geometry 100x30'
 #alias ag='ag --nocolor' 
@@ -101,10 +105,10 @@ myprompt
 function rprompt-git-current-branch {
   local branch_name st branch_status
 
-  local green="156"
-  local red="210"
-  local yellow="222"
-  local blue="038"
+  local green="151" # 156
+  local red="174" # 210
+  local yellow="180" # 222
+  local blue="109" # 038
  
   if [ ! -e  ".git" ]; then
     # git 管理されていないディレクトリは何も返さない
@@ -192,3 +196,7 @@ umask 027
 
 # Fuzzy finder
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

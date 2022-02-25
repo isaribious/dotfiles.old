@@ -16,7 +16,7 @@ vim.opt.background = "dark" -- tell vim what the background color looks like
 vim.opt.backspace = "start,eol,indent"
 vim.opt.clipboard = "unnamedplus" -- Copy paste between vim and everything else
 vim.opt.cmdheight = 2 -- More space for displaying messages
--- vim.opt.completeopt = menu,menuone,noselect
+-- vim.opt.completeopt = "menu,menuone,noselect"
 vim.opt.encoding = "utf-8" -- The encoding displayed
 vim.opt.expandtab = true -- Converts tabs to spaces
 vim.opt.fileencoding = "utf-8" -- The encoding written to file
@@ -38,7 +38,7 @@ vim.opt.shiftwidth = 4 -- Change the number of space characters inserted for ind
 vim.opt.showcmd = true
 vim.opt.showtabline = 2 -- Always show tabs
 vim.opt.signcolumn = "yes"
-vim.opt.smartindent = true -- Makes indenting smart
+vim.opt.smartindent = false -- Makes indenting smart
 vim.opt.smarttab = true -- Makes tabbing smarter will realize you have 2 vs 4
 vim.opt.softtabstop = 4
 -- vim.opt.splitbelow = true -- Horizontal splits will automatically be below
@@ -74,6 +74,8 @@ lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 -- lvim.keys.normal_mode["<C-q>"] = ":q<cr>"
   --nmap <C-w> <C-w>
 lvim.keys.normal_mode["<C-w>"] = "<C-w>"
+lvim.keys.normal_mode["<S-h>"] = nil
+lvim.keys.normal_mode["<S-l>"] = nil
 lvim.keys.insert_mode["jj"] = nil
 lvim.keys.insert_mode["kj"] = nil
 lvim.keys.insert_mode["jk"] = nil
@@ -202,9 +204,15 @@ vim.cmd([[
 ]])
 
 -- Commentary
+-- vim.cmd([[
+--   nnoremap <Tab><Tab> :Commentary<CR>
+--   vnoremap <Tab><Tab> :Commentary<CR>
+-- ]])
 vim.cmd([[
-  nnoremap <Tab><Tab> :Commentary<CR>
-  vnoremap <Tab><Tab> :Commentary<CR>
+  nnoremap \\ :Commentary<CR>
+  vnoremap \\ :Commentary<CR>
+  nnoremap \|\| <Cmd>lua ___comment_call("gbc")<CR>g@$
+  vnoremap \|\| <Cmd>lua ___comment_call("gbc")<CR>g@$
 ]])
 
 -- Telescope
@@ -222,8 +230,10 @@ vim.cmd([[
 -- Fuzzy Finder
 vim.cmd([[
   nnoremap <silent> <Leader>f :Files<CR>
+  nnoremap <silent> ff :Files<CR>
   nnoremap <silent> <Leader>g :Rg<CR>
-  nnoremap <silent> \\ :Buffers<CR>
+  nnoremap <silent> fg :Rg<CR>
+  nnoremap <silent> <Leader>\ :Buffers<CR>
   nnoremap FF :Files 
   nnoremap FG :Rg 
 ]])
@@ -299,9 +309,10 @@ lvim.builtin.telescope.defaults.mappings = {
 --   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
 --   w = { "<cmd>Trouble lsp_workspace_diagnostics<cr>", "Diagnostics" },
 -- }
-lvim.builtin.which_key.mappings.c = nil
-lvim.builtin.which_key.mappings.h = nil
-lvim.builtin.which_key.mappings.q = nil
+-- lvim.builtin.which_key.mappings.c = nil
+-- lvim.builtin.which_key.mappings.h = nil
+-- lvim.builtin.which_key.mappings.q = nil
+lvim.builtin.which_key.active = false
 
 ---------------------------------------------------------------------
 -- Project
@@ -332,6 +343,7 @@ lvim.builtin.treesitter.ensure_installed = {
 
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
+lvim.builtin.treesitter.indent.enable = false
 
 ---------------------------------------------------------------------
 -- LSP
@@ -406,7 +418,40 @@ lvim.lsp.automatic_servers_installation = false
 --   },
 -- }
 
-function goimports(timeoutms)
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+lvim.lsp.on_attach_callback = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  -- Enable completion triggered by <c-x><c-o>
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', 'gk', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<space>r', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+  buf_set_keymap('n', 'gp', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', 'gn', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+  -- buf_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+  -- buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+
+end
+
+function goimports(timeout_ms)
   local context = { source = { organizeImports = true } }
   vim.validate { context = { context, "t", true } }
 
@@ -428,9 +473,9 @@ function goimports(timeoutms)
     if action.edit then
       vim.lsp.util.apply_workspace_edit(action.edit)
     end
-    if type(action.command) == "table" then
-      vim.lsp.buf.execute_command(action.command)
-    end
+    -- if type(action.command) == "table" then
+    --   vim.lsp.buf.execute_command(action.command)
+    -- end
   else
     vim.lsp.buf.execute_command(action)
   end
@@ -452,6 +497,12 @@ require"lsp_signature".setup({
   -- use_lspsaga = false,
   auto_close_after = nil,
 })
+
+---------------------------------------------------------------------
+-- Completion
+---------------------------------------------------------------------
+local cmp = require'cmp'
+lvim.builtin.cmp.mapping["<C-d>"] = cmp.mapping.complete()
 
 ---------------------------------------------------------------------
 -- Colorlizer
@@ -519,6 +570,11 @@ vim.cmd([[
 ]])
 
 ---------------------------------------------------------------------
+-- Terminal
+---------------------------------------------------------------------
+lvim.builtin.terminal.open_mapping = [[<c-\>]]
+
+---------------------------------------------------------------------
 -- Dart
 ---------------------------------------------------------------------
 vim.cmd([[
@@ -565,11 +621,55 @@ lvim.autocommands.colorscheme = {
 }
 lvim.autocommands.indent = {
   { "BufWinEnter", "*.lua", "setlocal ts=2 sw=2" },
+  { "BufWinEnter", "*.lua", "setlocal ts=2 sw=2" },
   { "BufWinEnter", "*.html", "setlocal ts=2 sw=2" },
   { "BufWinEnter", "*.js", "setlocal ts=2 sw=2" },
   { "BufWinEnter", "*.css", "setlocal ts=2 sw=2" },
   { "BufWinEnter", "*.dart", "setlocal ts=2 sw=2" },
 }
+-- vim.g.after_tab_leave = false
+-- lvim.autocommands.close = {
+--   { "TabEnter", "*", "let g:after_tab_leave=v:false" },
+--   { "TabLeave", "*", "let g:after_tab_leave=v:true" },
+--   { "TabClosed", "*", "lua active_left(vim.fn.expand('%%'))" },
+-- }
+-- function active_left(tab_number)
+--     current = vim.fn.tabpagenr()
+--     print(tab_number)
+--     if vim.g.after_tab_leave and current ~= 1 and current == tab_number then
+--       vim.cmd('tabprevious')
+--     end
+-- end
+curr = 1
+lvim.autocommands.close = {
+  { "TabLeave", "*", "lua curr = vim.fn.tabpagenr()" },
+  { "TabClosed", "*", "lua active_left()" },
+}
+function active_left()
+    local last = vim.fn.tabpagenr('$')
+    -- print("curr: ", curr, "last: ", last)
+    if curr <= last then
+      -- print('aaa')
+      vim.cmd('tabprevious')
+    end
+end
+
+-- vim.cmd([[
+--   let g:after_tab_leave = v:false
+--   augroup activate_left_tab
+--     autocmd!
+--     autocmd TabEnter * let g:after_tab_leave = v:false
+--     autocmd TabLeave * let g:after_tab_leave = v:true
+--     autocmd TabClosed * call s:activate_left(expand('<afile>'))
+--   augroup END
+
+--   function! s:activate_left(tab_number) abort
+--     let current = tabpagenr()
+--     if g:after_tab_leave && current != 1 && current == a:tab_number
+--       tabprevious
+--     endif
+--   endfunction
+-- ]])
 
 ---------------------------------------------------------------------
 -- Mynord

@@ -1,17 +1,17 @@
 [user]
-    email = xxxx@xxxx.xxx
-    name = XXXX XXXX
+    email = shimauchi.daisuke@bugless.co.jp
+    name = Daisuke Shimauchi
 [color]
     ui = auto
 [color "status"]
-    added = 222      # yellow
-    changed = 210    # red
-    untracked = 210  # red
-    deleted = 038    # blue
+    added = 180           # yellow
+    changed = 174         # red
+    untracked = 174       # red
+    deleted = 038         # blue
 [color "diff"]
-    new = 156   # green
-    old = 210   # red
-    frag = 158  # light green
+    new = 151             # green
+    old = 174             # red
+    frag = 242            # light green
 [color "grep"]
-    match = 220           # yellow
-    separator = bold 021  # blue
+    match = 220           # dark yellow
+    separator = bold 099  # purple
