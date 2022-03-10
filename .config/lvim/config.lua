@@ -27,7 +27,8 @@ vim.opt.hlsearch = true
 vim.opt.ignorecase = true -- Ignore case for search
 vim.opt.iskeyword:append('-') -- treat dash separated words as a word text object
 vim.opt.laststatus = 2 -- Always display the status line
--- vim.opt.list lcs = tab:\ \" -- Put cursor in the head of tab char. Notes) Therea is the extra space after the second '\'.
+vim.opt.list = true -- Tab display switch
+vim.opt.listchars = { tab = "  " } -- Put cursor in the head of tab char.
 vim.opt.mouse = 'a' -- Enable your mouse
 vim.opt.wrap = true -- Display long lines as wrap
 vim.opt.number = false -- Enable your mouse
@@ -41,8 +42,8 @@ vim.opt.signcolumn = "yes"
 vim.opt.smartindent = false -- Makes indenting smart
 vim.opt.smarttab = true -- Makes tabbing smarter will realize you have 2 vs 4
 vim.opt.softtabstop = 4
--- vim.opt.splitbelow = true -- Horizontal splits will automatically be below
--- vim.opt.splitright = true -- Vertical splits will automatically be to the right
+vim.opt.splitbelow = false -- Horizontal splits will automatically be below
+vim.opt.splitright = false -- Vertical splits will automatically be to the right
 vim.opt.statusline = "%f%m%=%l,%c\\ %{'['.(&fenc!=''?&fenc:&enc).']\\ ['.&fileformat.']'}"
 vim.opt.tabstop = 4 -- Insert 2 spaces for a tab
 vim.opt.timeoutlen = 500 -- By default timeoutlen is 1000 ms
