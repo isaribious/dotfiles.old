@@ -110,11 +110,11 @@ function rprompt-git-current-branch {
   local yellow="180" # 222
   local blue="109" # 038
  
-  if [ ! -e  ".git" ]; then
+  branch_name=`git rev-parse --abbrev-ref HEAD 2> /dev/null`
+  if [ -z  $branch_name ]; then
     # git 管理されていないディレクトリは何も返さない
     return
   fi
-  branch_name=`git rev-parse --abbrev-ref HEAD 2> /dev/null`
   st=`git status 2> /dev/null`
   if [[ -n `echo "$st" | grep "^nothing to"` ]]; then
     # 全て commit されてクリーンな状態
