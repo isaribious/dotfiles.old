@@ -111,6 +111,10 @@ lvim.keys.term_mode["<C-l>"] = "<Right>"
 lvim.keys.term_mode["<C-n>"] = "<Down>"
 lvim.keys.term_mode["<C-p>"] = "<Up>"
 
+-- Delete backword
+lvim.keys.insert_mode["<C-y>"] = "<C-o>dw"
+lvim.keys.insert_mode["<C-g>"] = "<C-o>d$"
+
 -- Remove highlight
 lvim.keys.normal_mode["<Esc><Esc>"] = ":<C-u>noh<CR>"
 
@@ -142,8 +146,10 @@ lvim.keys.normal_mode["<C-A-j>"] = "<C-w>-"
 
 -- Quick list
 vim.cmd([[
-  nnoremap <Leader>q :copen<CR>
-  nnoremap <Leader>z :cclose<CR>
+  nnoremap <Leader>l :botright copen<CR>
+  nnoremap <Leader>q :cclose<CR>
+  nnoremap <C-n> :cnext<CR>
+  nnoremap <C-p> :cprevious<CR>
 ]])
 
 -- Location list
@@ -441,14 +447,14 @@ lvim.lsp.on_attach_callback = function(client, bufnr)
   buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
   buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
   buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<space>r', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<space><Tab>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<space>r', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
   buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
   buf_set_keymap('n', 'gp', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', 'gn', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
   -- buf_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
-  -- buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+  buf_set_keymap('n', '<space><space>', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
 end
 
@@ -605,6 +611,7 @@ lvim.autocommands.cursor_highlight = {
   { "WinLeave", "*", "set nocursorline" },
 }
 lvim.autocommands.import = {
+  -- { "BufWritePre", "*.go", "lua vim.lsp.buf.formatting()"},
   { "BufWritePre", "*.go", "lua goimports(1000)"},
 }
 lvim.autocommands.colorscheme = {
@@ -654,23 +661,9 @@ function active_left()
       vim.cmd('tabprevious')
     end
 end
-
--- vim.cmd([[
---   let g:after_tab_leave = v:false
---   augroup activate_left_tab
---     autocmd!
---     autocmd TabEnter * let g:after_tab_leave = v:false
---     autocmd TabLeave * let g:after_tab_leave = v:true
---     autocmd TabClosed * call s:activate_left(expand('<afile>'))
---   augroup END
-
---   function! s:activate_left(tab_number) abort
---     let current = tabpagenr()
---     if g:after_tab_leave && current != 1 && current == a:tab_number
---       tabprevious
---     endif
---   endfunction
--- ]])
+-- lvim.autocommands.term = {
+--   { "TermLeave", "*", "echo('aaaa')" },
+-- }
 
 ---------------------------------------------------------------------
 -- Mynord
