@@ -17,9 +17,15 @@ local nord = {
   nord12_gui = "#D08770"       ,
   nord13_gui = "#EBCB8B"       ,
   nord14_gui = "#A3BE8C"       ,
-  -- nord14_gui = "#c3c399"       ,
   -- nord15_gui = "#B48EAD"       ,
-  nord15_gui = "#c19696"       ,
+  nord15_gui = "#C19696"       ,
+  nord16_gui = "#ff2255"       ,
+  -- nord16_gui = "#f2c56c"       ,
+  -- nord16_gui = "#ffaa00"       ,
+  -- nord16_gui = "#e2b2ab"       ,
+  nord17_gui = "#01A1C1"       ,
+  -- nord18_gui = "#ddcdad"       ,
+  nord18_gui = "#686868"       ,
   none =          'NONE'
 }
 

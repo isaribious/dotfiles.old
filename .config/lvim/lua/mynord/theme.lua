@@ -13,11 +13,14 @@ theme.loadSyntax = function ()
     Number =         { fg = nord.nord15_gui }, -- a number constant: 5
     Boolean =        { fg = nord.nord9_gui }, -- a boolean constant: TRUE, false
     Float =          { fg = nord.nord15_gui }, -- a floating point constant: 2.3e10
-    Statement =      { fg = nord.nord9_gui }, -- any statement
+    -- Statement =      { fg = nord.nord9_gui }, -- any statement
+    Statement =      { fg = nord.nord16_gui }, -- FZF: pattern matching character
     Label =          { fg = nord.nord9_gui }, -- case, default, etc.
     Operator =       { fg = nord.nord9_gui }, -- sizeof", "+", "*", etc.
-    Exception =      { fg = nord.nord9_gui }, -- try, catch, throw
-    PreProc =        { fg = nord.nord9_gui }, -- generic Preprocessor
+    -- Exception =      { fg = nord.nord9_gui }, -- try, catch, throw
+    Exception =      { fg = nord.nord16_gui }, -- FZF: marking character
+    -- PreProc =        { fg = nord.nord9_gui }, -- generic Preprocessor
+    PreProc =        { fg = nord.nord9_gui }, -- FZF: matching numbers
     Include =        { fg = nord.nord9_gui }, -- preprocessor #include
     Define =         { fg = nord.nord9_gui }, -- preprocessor #define
     Macro =          { fg = nord.nord9_gui }, -- same as Define
@@ -61,7 +64,8 @@ theme.loadSyntax = function ()
     syntax.String = { fg = nord.nord14_gui, bg = nord.none, style= 'italic' } -- any string
 	else
 		syntax.Comment =		{fg = nord.nord3_gui_bright} -- normal comments
-		syntax.Conditional =		{ fg = nord.nord9_gui } -- normal if, then, else, endif, switch, etc.
+		-- syntax.Conditional =		{ fg = nord.nord9_gui } -- normal if, then, else, endif, switch, etc.
+		syntax.Conditional =		{ fg = nord.nord9_gui } -- FZF: prompt
 		syntax.Keyword =			{ fg = nord.nord9_gui } -- normal for, do, while, etc.
 		syntax.Repeat =				{ fg = nord.nord9_gui } -- normal any other keyword
 		syntax.Function =		{ fg = nord.nord8_gui} -- normal function names
@@ -368,7 +372,7 @@ theme.loadPlugins = function()
     -- TelescopeSelection =      { fg = nord.nord9_gui },
     TelescopeSelection =      { fg = nord.nord8_gui, bg = nord.nord0_gui },
     -- TelescopeMatching =       { fg = nord.nord8_gui },
-    TelescopeMatching =       { fg = nord.nord13_gui },
+    TelescopeMatching =       { fg = nord.nord18_gui },
 
     -- NvimTree
     NvimTreeRootFolder =        { fg = nord.nord7_gui, style = "bold" },
