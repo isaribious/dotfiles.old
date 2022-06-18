@@ -52,6 +52,7 @@ vim.opt.title = true
 vim.opt.updatetime = 300 -- Faster completion
 vim.opt.wildmenu = true
 vim.opt.wildmode = "list:longest"
+-- vim.opt.wildmode = "longest:full"
 
 vim.opt.inccommand = "split" -- incremental substitution (neovim)
 
@@ -66,15 +67,6 @@ lvim.transparent_window = true
 ---------------------------------------------------------------------
 -- Key Mappings
 ---------------------------------------------------------------------
--- keymappings [view all the defaults by pressing <leader>Lk]
-lvim.leader = "\\"
--- add your own keymapping
-lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
--- unmap a default keymapping
--- lvim.keys.normal_mode["<C-Up>"] = ""
--- edit a default keymapping
--- lvim.keys.normal_mode["<C-q>"] = ":q<cr>"
---nmap <C-w> <C-w>
 lvim.keys.normal_mode["<C-w>"] = "<C-w>"
 -- lvim.keys.normal_mode["<S-h>"] = nil
 -- lvim.keys.normal_mode["<S-l>"] = nil
@@ -100,10 +92,10 @@ lvim.keys.normal_mode["<C-j>"] = "<Down>"
 lvim.keys.normal_mode["<C-k>"] = "<Up>"
 lvim.keys.normal_mode["<C-l>"] = "<Right>"
 lvim.keys.command_mode = {
-    ["<C-h>"] = { "<Left>", { expr = false, noremap = true }, },
-    ["<C-l>"] = { "<Right>", { expr = false, noremap = true }, },
-    ["<C-j>"] = { "<Down>", { expr = false, noremap = true }, },
-    ["<C-k>"] = { "<Up>", { expr = false, noremap = true }, },
+  ["<C-h>"] = { "<Left>", { expr = false, noremap = true }, },
+  ["<C-l>"] = { "<Right>", { expr = false, noremap = true }, },
+  ["<C-j>"] = { "<Down>", { expr = false, noremap = true }, },
+  ["<C-k>"] = { "<Up>", { expr = false, noremap = true }, },
 }
 lvim.keys.term_mode["<C-h>"] = "<Left>"
 lvim.keys.term_mode["<C-j>"] = "<Down>"
@@ -188,17 +180,17 @@ vim.cmd([[
   nmap    t [Tag]
   " t1 で1番左のタブ、t2 で1番左から2番目のタブにジャンプ
   for n in range(1, 9)
-    execute 'nnoremap <silent> [Tag]'.n  ':<C-u>tabnext'.n.'<CR>'
+    execute 'nnoremap <silent> [Tag]'.n  ':<C-u> BufferLineGoToBuffer'.n.'<CR>'
   endfor
 
   " New tab (most right)
   nnoremap <silent> [Tag]t :<C-u> $tabnew<CR>
   " Close tab
-  nnoremap <silent> [Tag]w :<C-u> tabclose<CR>
+  nnoremap <silent> [Tag]w :<C-u> BufferKill<CR>
   " Next tab
-  nnoremap <silent> [Tag]l :<C-u> tabnext<CR>
+  nnoremap <silent> [Tag]l :<C-u> BufferLineCycleNext<CR>
   " Previous tab
-  nnoremap <silent> [Tag]h :<C-u> tabprevious<CR>
+  nnoremap <silent> [Tag]h :<C-u> BufferLineCyclePrev<CR>
 ]])
 
 -- Terminal
@@ -241,13 +233,15 @@ vim.cmd([[
   nnoremap <silent> <Leader>f :Files<CR>
   nnoremap <silent> <Leader>g :Rg<CR>
   nnoremap <silent> <Leader>\ :Buffers<CR>
+  nnoremap <silent> `` :Files ~/.config/lvim<CR>
+  nnoremap <silent> ~~ :Files ~/.local/share/lunarvim<CR>
   nnoremap FF :Files 
   nnoremap FG :Rg 
 ]])
 
 -- Nvim Tree
 vim.cmd([[
-  nnoremap <silent> `` :NvimTreeToggle<CR>
+  nnoremap <silent> <Leader>` :NvimTreeToggle<CR>
 ]])
 
 -- Diffview
@@ -263,55 +257,125 @@ vim.cmd([[
 ---------------------------------------------------------------------
 -- Additional Plugins
 lvim.plugins = {
-    { 'arcticicestudio/nord-vim' },
-    { 'shaunsingh/nord.nvim' },
-    { 'edeneast/nightfox.nvim' },
-    { 'folke/tokyonight.nvim' },
-    { 'jdkanani/vim-material-theme' },
-    { 'itchyny/lightline.vim' },
-    { 'folke/trouble.nvim', cmd = 'TroubleToggle' },
-    { 'tpope/vim-commentary' },
-    { 'ray-x/lsp_signature.nvim' },
-    { 'norcalli/nvim-colorizer.lua' },
-    { 'dart-lang/dart-vim-plugin' },
-    { 'junegunn/fzf', dir = '~/.fzf', run = './install --all' },
-    { 'junegunn/fzf.vim' },
-    { "sindrets/diffview.nvim", event = "BufRead", },
+  -- { 'arcticicestudio/nord-vim' },
+  { 'shaunsingh/nord.nvim' },
+  { 'edeneast/nightfox.nvim' },
+  { 'folke/tokyonight.nvim' },
+  { 'jdkanani/vim-material-theme' },
+  -- { 'itchyny/lightline.vim' },
+  { 'folke/trouble.nvim', cmd = 'TroubleToggle' },
+  { 'tpope/vim-commentary' },
+  { 'ray-x/lsp_signature.nvim' },
+  { 'norcalli/nvim-colorizer.lua' },
+  { 'dart-lang/dart-vim-plugin' },
+  { 'hrsh7th/cmp-cmdline' },
+  { 'junegunn/fzf', dir = '~/.fzf', run = './install --all' },
+  { 'junegunn/fzf.vim' },
+  { "sindrets/diffview.nvim", event = "BufRead", },
 }
 
 -- Activation for Core Plugins
 lvim.builtin.alpha.active = false
 lvim.builtin.which_key.active = false
+lvim.builtin.bufferline.active = true
 lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 
--- lvim.builtin.lualine.active = false
+lvim.builtin.lualine.active = true
+
+-- StatusLine
+-- vim.cmd([[
+--   " StatusLine colorscheme
+--   let g:lightline = {
+--       \  'colorscheme': 'disk7',
+--       \  'inactive': {
+--       \    'left': [ ['filename', 'modified' ] ],
+--       \  },
+--       \}
+-- ]])
+local components = require "lvim.core.lualine.components"
+lvim.builtin.lualine.sections = {
+  lualine_a = {
+    -- components.mode,
+    "mode",
+  },
+  lualine_b = {
+    components.branch,
+    components.filename,
+  },
+  lualine_c = {
+    components.diff,
+    components.python_env,
+  },
+  lualine_x = {
+    components.diagnostics,
+    components.treesitter,
+    components.lsp,
+    components.filetype,
+    "fileformat",
+    components.encoding,
+  },
+  lualine_y = {
+    components.progress,
+  },
+  lualine_z = {
+    -- components.scrollbar,
+    components.location,
+  },
+}
 
 -- Telescope
 lvim.builtin.telescope.defaults.mappings = {
-    -- for input mode
-    i = {
-        ["<C-j>"] = "move_selection_next",
-        ["<C-k>"] = "move_selection_previous",
-        -- ["<C-d>"] = "cycle_history_next",
-        -- ["<C-u>"] = "cycle_history_prev",
-        -- ["<CR>"] = "select_tab",
-        ["<C-l>"] = false,
-    },
-    -- for normal mode
-    n = {
-        ["<C-j>"] = "move_selection_next",
-        ["<C-k>"] = "move_selection_previous",
-        -- ["<CR>"] = "select_tab",
-    },
+  -- for input mode
+  i = {
+    ["<C-j>"] = "move_selection_next",
+    ["<C-k>"] = "move_selection_previous",
+    -- ["<C-d>"] = "cycle_history_next",
+    -- ["<C-u>"] = "cycle_history_prev",
+    -- ["<CR>"] = "select_tab",
+    ["<C-l>"] = false,
+  },
+  -- for normal mode
+  n = {
+    ["<C-j>"] = "move_selection_next",
+    ["<C-k>"] = "move_selection_previous",
+    -- ["<CR>"] = "select_tab",
+  },
 }
 
 -- Completion
 local cmp = require("cmp")
 lvim.builtin.cmp.mapping["<C-d>"] = cmp.mapping.complete()
 lvim.builtin.cmp.mapping["<C-f>"] = function() end
-lvim.builtin.cmp.mapping["<C-e>"] = cmp.mapping.abort()
+lvim.builtin.cmp.mapping["<C-e>"] = cmp.mapping.close()
 lvim.builtin.cmp.mapping["<C-c>"] = cmp.mapping.abort()
+lvim.builtin.cmp.mapping["<C-j>"] = function() end
+lvim.builtin.cmp.mapping["<C-k>"] = function() end
+-- cmp.setup.cmdline('/', {
+--   mapping = cmp.mapping.preset.cmdline(),
+--   sources = {
+--     { name = 'buffer' }
+--   }
+-- })
+
+-- -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+-- cmp.setup.cmdline(':', {
+--   mapping = cmp.mapping.preset.cmdline({
+--     ["<C-k>"] = cmp.mapping.select_prev_item(),
+--     ["<C-j>"] = cmp.mapping.select_next_item(),
+--     -- ["<C-d>"] = cmp.mapping.complete(),
+--     ["<C-d>"] = cmp.mapping.complete(),
+--     -- ["<C-e>"] = cmp.mapping.abort(),
+
+--     ["<CR>"] = cmp.mapping.close(),
+--     -- ['<CR>'] = cmp.mapping.confirm({ select = false }),
+--   }),
+--   sources = cmp.config.sources({
+--     -- { name = 'path' }
+--   }, {
+--     { name = 'cmdline' }
+--   })
+-- })
 
 -- Project
 lvim.builtin.project.manual_mode = true
@@ -320,19 +384,19 @@ lvim.builtin.project.silent_chdir = false
 
 -- Treesitter
 lvim.builtin.treesitter.ensure_installed = {
-    "bash",
-    "c",
-    "javascript",
-    "json",
-    "lua",
-    "python",
-    "typescript",
-    "css",
-    "rust",
-    "java",
-    "yaml",
-    "go",
-    "dart",
+  "bash",
+  "c",
+  "javascript",
+  "json",
+  "lua",
+  "python",
+  "typescript",
+  "css",
+  "rust",
+  "java",
+  "yaml",
+  "go",
+  "dart",
 }
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
@@ -410,50 +474,50 @@ lvim.lsp.automatic_servers_installation = false
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 lvim.lsp.on_attach_callback = function(client, bufnr)
-    local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
 
-    local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
-    -- Enable completion triggered by <c-x><c-o>
-    buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+  -- Enable completion triggered by <c-x><c-o>
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-    -- Mappings.
-    local opts = { noremap = true, silent = true }
+  -- Mappings.
+  local opts = { noremap = true, silent = true }
 
-    -- See `:help vim.lsp.*` for documentation on any of the below functions
-    buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-    buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-    buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-    buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-    buf_set_keymap('n', 'gk', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-    buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-    buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-    buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-    buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-    buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-    buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-    buf_set_keymap('n', 'gl', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-    buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-    buf_set_keymap('n', 'gp', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-    buf_set_keymap('n', 'gn', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-    -- buf_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
-    buf_set_keymap('n', '<space><space>', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', 'gk', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', 'gl', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+  buf_set_keymap('n', 'gp', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', 'gn', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+  -- buf_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+  buf_set_keymap('n', '<space><space>', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
 end
 
 function OrgImports(wait_ms)
-    local params = vim.lsp.util.make_range_params()
-    params.context = { only = { "source.organizeImports" } }
-    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, wait_ms)
-    for _, res in pairs(result or {}) do
-        for _, r in pairs(res.result or {}) do
-            if r.edit then
-                vim.lsp.util.apply_workspace_edit(r.edit, "UTF-8")
-            else
-                vim.lsp.buf.execute_command(r.command)
-            end
-        end
+  local params = vim.lsp.util.make_range_params()
+  params.context = { only = { "source.organizeImports" } }
+  local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, wait_ms)
+  for _, res in pairs(result or {}) do
+    for _, r in pairs(res.result or {}) do
+      if r.edit then
+        vim.lsp.util.apply_workspace_edit(r.edit, "UTF-8")
+      else
+        vim.lsp.buf.execute_command(r.command)
+      end
     end
+  end
 end
 
 -- require 'lspconfig'.sumneko_lua.setup {}
@@ -496,41 +560,30 @@ require("luasnip/loaders/from_vscode").load({ paths = { "./my-snippets" } }) -- 
 
 -- LSP Signature
 require "lsp_signature".setup({
-    bind = true, -- This is mandatory, otherwise border config won't get registered.
-    handler_opts = {
-        border = "rounded"
-    },
-    -- fix_pos = false,
-    -- hint_enable = false,
-    hint_prefix = " 💡 ",
-    -- use_lspsaga = false,
-    auto_close_after = nil,
+  bind = true, -- This is mandatory, otherwise border config won't get registered.
+  handler_opts = {
+    border = "rounded"
+  },
+  -- fix_pos = false,
+  -- hint_enable = false,
+  hint_prefix = " 💡 ",
+  -- use_lspsaga = false,
+  auto_close_after = nil,
 })
 
 -- Colorlizer
 require 'colorizer'.setup(
-    { '*'; },
-    {
-        RGB      = true; -- #RGB hex codes
-        RRGGBB   = true; -- #RRGGBB hex codes
-        names    = false; -- "Name" codes like Blue
-        RRGGBBAA = false; -- #RRGGBBAA hex codes
-        rgb_fn   = true; -- CSS rgb() and rgba() functions
-        hsl_fn   = false; -- CSS hsl() and hsla() functions
-        css      = false; -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
-        css_fn   = false; -- Enable all CSS *functions*: rgb_fn, hsl_fn
-    })
-
--- StatusLine
-vim.cmd([[
-  " StatusLine colorscheme
-  let g:lightline = {
-      \  'colorscheme': 'disk7',
-      \  'inactive': {
-      \    'left': [ ['filename', 'modified' ] ],
-      \  },
-      \}
-]])
+  { '*'; },
+  {
+    RGB      = true; -- #RGB hex codes
+    RRGGBB   = true; -- #RRGGBB hex codes
+    names    = false; -- "Name" codes like Blue
+    RRGGBBAA = false; -- #RRGGBBAA hex codes
+    rgb_fn   = true; -- CSS rgb() and rgba() functions
+    hsl_fn   = false; -- CSS hsl() and hsla() functions
+    css      = false; -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+    css_fn   = false; -- Enable all CSS *functions*: rgb_fn, hsl_fn
+  })
 
 -- Fuzzy Finder
 vim.cmd([[
@@ -592,27 +645,33 @@ vim.cmd([[
 --   end,
 -- })
 
--- cursor highlight
+-- Cursor highlight
 vim.api.nvim_create_autocmd("WinEnter", {
-    pattern = "*",
-    command = "set cursorline"
+  pattern = "*",
+  command = "set cursorline"
 })
 vim.api.nvim_create_autocmd("WinLeave", {
-    pattern = "*",
-    command = "set nocursorline"
+  pattern = "*",
+  command = "set nocursorline"
 })
 
--- import
+-- Yank Highlight
+vim.api.nvim_create_autocmd("TextYankPost", {
+  pattern = "*",
+  command = "silent! lua vim.highlight.on_yank {higroup=\"CursorLine\", timeout=150}"
+})
+
+-- Import
 vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = "*.go",
-    command = "lua OrgImports(1000)"
+  pattern = "*.go",
+  command = "lua OrgImports(1000)"
 })
 
--- colorscheme
+-- Colorscheme
 vim.api.nvim_create_autocmd("ColorScheme", {
-    pattern = "*",
-    callback = function()
-        vim.cmd([[
+  pattern = "*",
+  callback = function()
+    vim.cmd([[
           highlight LineNr ctermbg=none guifg=#777777 guibg=none
           highlight CursorLineNr ctermbg=none guifg=#777777 guibg=none
           highlight CursorLine ctermbg=none guifg=none guibg=#3b4451
@@ -620,26 +679,27 @@ vim.api.nvim_create_autocmd("ColorScheme", {
           highlight TSComment ctermbg=none guifg=#777777 guibg=none
           highlight Visual ctermbg=none guifg=none guibg=#5c6168
           highlight IncSearch ctermbg=none guifg=#ffffff guibg=#ff2255
-          highlight Search ctermbg=none guifg=#3b4252 guibg=#ebcb8b
+          highlight Search ctermbg=none guifg=#ebcb8b guibg=#3b4252 cterm=reverse
           highlight MatchParen ctermbg=none guifg=#ff6a6a guibg=#777777
         ]])
-    end
+  end
 })
 
--- indent
+-- Indent
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
-    pattern = {
-        "*.lua",
-        "*.json",
-        "*.html",
-        "*.js",
-        "*.css",
-        "*.dart",
-    },
-    command = "setlocal ts=2 sw=2",
+  pattern = {
+    "*.lua",
+    "*.json",
+    "*.html",
+    "*.js",
+    "*.css",
+    "*.dart",
+  },
+  command = "setlocal ts=2 sw=2",
 })
 
 ---------------------------------------------------------------------
 -- Mynord
 ---------------------------------------------------------------------
 vim.g.nord_borders = true
+vim.g.nord_italic = false

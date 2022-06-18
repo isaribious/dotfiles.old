@@ -1,11 +1,11 @@
--- Colorscheme name:    mynord.nvim
+-- Colorscheme name:    nord.nvim
 -- Description:         Port of articicestudio's nord theme for neovim
--- Author:              https://github.com/disk7
+-- Author:              https://github.com/shaunsingh
 
-local util = require('mynord.util')
+local util = require("mynord.util")
 
 -- Load the theme
-local set = function ()
+local set = function()
   util.load()
 end
 
