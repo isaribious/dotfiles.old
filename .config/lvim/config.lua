@@ -329,6 +329,7 @@ lvim.builtin.lualine.sections = {
 
 -- Buffer Line
 lvim.builtin.bufferline.options.numbers = "ordinal"
+lvim.builtin.bufferline.options.separator_style = { '|', '|' }
 
 -- Telescope
 lvim.builtin.telescope.defaults.mappings = {
