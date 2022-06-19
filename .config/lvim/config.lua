@@ -184,19 +184,22 @@ vim.cmd([[
   endfor
 
   " New tab (most right)
-  nnoremap <silent> [Tag]t :<C-u> $tabnew<CR>
+  nnoremap <silent> [Tag]t :<C-u> enew<CR>
   " Close tab
   nnoremap <silent> [Tag]w :<C-u> BufferKill<CR>
   " Next tab
   nnoremap <silent> [Tag]l :<C-u> BufferLineCycleNext<CR>
   " Previous tab
   nnoremap <silent> [Tag]h :<C-u> BufferLineCyclePrev<CR>
+
+  nnoremap <silent> <S-l> :<C-u> BufferLineMoveNext<CR>
+  nnoremap <silent> <S-h> :<C-u> BufferLineMovePrev<CR>
 ]])
 
 -- Terminal
 vim.cmd([[
   " New terminal (most right)
-  nnoremap <silent> t\ :<C-u> $tabnew \| terminal<CR>
+  nnoremap <silent> t\ :<C-u> enew \| terminal<CR>
   " New split terminal
   nnoremap <silent> ts :split \| resize 20 \| terminal<CR>
   " New vsplit terminal
@@ -324,6 +327,9 @@ lvim.builtin.lualine.sections = {
   },
 }
 
+-- Buffer Line
+lvim.builtin.bufferline.options.numbers = "ordinal"
+
 -- Telescope
 lvim.builtin.telescope.defaults.mappings = {
   -- for input mode
@@ -403,8 +409,8 @@ lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.treesitter.indent.enable = false
 
 -- LSP
--- ---@usage disable automatic installation of servers
 lvim.lsp.automatic_servers_installation = false
+lvim.lsp.document_highlight = false
 
 -- ---@usage Select which servers should be configured manually. Requires `:LvimCacheRest` to take effect.
 -- See the full default list `:lua print(vim.inspect(lvim.lsp.override))`
@@ -592,8 +598,7 @@ vim.cmd([[
   let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.85 } }
   let g:fzf_preview_window = ['right:56%', 'ctrl-/']
   let g:fzf_action = {
-    \ 'enter': 'tab drop',
-    \ 'ctrl-e': 'edit',
+    \ 'enter': 'edit',
     \ 'ctrl-s': 'split',
     \ 'ctrl-v': 'vsplit' }
   let g:fzf_colors =
