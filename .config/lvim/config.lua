@@ -236,15 +236,15 @@ vim.cmd([[
   nnoremap <silent> <Leader>f :Files<CR>
   nnoremap <silent> <Leader>g :Rg<CR>
   nnoremap <silent> <Leader>\ :Buffers<CR>
-  nnoremap <silent> `` :Files ~/.config/lvim<CR>
-  nnoremap <silent> ~~ :Files ~/.local/share/lunarvim<CR>
+  nnoremap <silent> <Leader>, :Files ~/.config/lvim<CR>
+  nnoremap <silent> <Leader>. :Files ~/.local/share/lunarvim<CR>
   nnoremap FF :Files 
   nnoremap FG :Rg 
 ]])
 
 -- Nvim Tree
 vim.cmd([[
-  nnoremap <silent> <Leader>` :NvimTreeToggle<CR>
+  nnoremap <silent> `` :NvimTreeToggle<CR>
 ]])
 
 -- Diffview
@@ -412,6 +412,7 @@ lvim.builtin.treesitter.indent.enable = false
 -- LSP
 lvim.lsp.automatic_servers_installation = false
 lvim.lsp.document_highlight = false
+lvim.lsp.diagnostics.virtual_text = false
 
 -- ---@usage Select which servers should be configured manually. Requires `:LvimCacheRest` to take effect.
 -- See the full default list `:lua print(vim.inspect(lvim.lsp.override))`
@@ -504,7 +505,7 @@ lvim.lsp.on_attach_callback = function(client, bufnr)
   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   buf_set_keymap('n', 'gl', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+  buf_set_keymap('n', '<space>a', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
   buf_set_keymap('n', 'gp', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', 'gn', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
   -- buf_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
@@ -616,13 +617,23 @@ vim.cmd([[
     \ 'spinner': ['fg', 'Label'],
     \ 'header':  ['fg', 'Comment'] }
 
-    command! -bang -nargs=* Rg
-      \ call fzf#vim#grep(
-      \   "rg --column --line-number --no-heading --hidden --smart-case .+",
-      \   1,
-      \   fzf#vim#with_preview(),
-      \   0,
-      \ )
+    "command! -bang -nargs=* Rg
+    "  \ call fzf#vim#grep(
+    "  \   "rg --column --line-number --no-heading --hidden --smart-case .+",
+    "  \   1,
+    "  \   fzf#vim#with_preview(),
+    "  \   0,
+    "  \ )
+
+    function! RgDir(isFullScreen, args)
+        let l:path = a:args
+        if empty(l:path)
+            let l:path = "."
+        endif
+        call fzf#vim#grep("rg --column --line-number --no-heading -uu --smart-case .+", 1, {'dir': l:path}, a:isFullScreen)
+    endfunction
+
+    command! -bang -nargs=? -complete=dir Rg call RgDir(<bang>0, <q-args>)
 ]])
 
 -- Terminal
