@@ -119,7 +119,7 @@ vim.cmd([[
 lvim.keys.insert_mode["<C-v>"] = "<C-r>*"
 
 -- Select all
-lvim.keys.normal_mode["<C-a>"] = "gg<S-v>G"
+-- lvim.keys.normal_mode["<C-a>"] = "gg<S-v>G"
 
 -- Increment/decrement
 lvim.keys.normal_mode["+"] = "<C-a>"
@@ -173,6 +173,25 @@ vim.cmd([[
 ]])
 
 -- Tab
+-- vim.cmd([[
+--   " The prefix key.
+--   nnoremap    [Tag]   <Nop>
+--   " Tab jump
+--   nmap    t [Tag]
+--   " t1 で1番左のタブ、t2 で1番左から2番目のタブにジャンプ
+--   for n in range(1, 9)
+--     execute 'nnoremap <silent> [Tag]'.n  ':<C-u> tabnext'.n.'<CR>'
+--   endfor
+
+--   " New tab (most right)
+--   nnoremap <silent> [Tag]t :<C-u> $tabnew$<CR>
+--   " Close tab
+--   nnoremap <silent> [Tag]w :<C-u> tabclose<CR>
+--   " Next tab
+--   nnoremap <silent> [Tag]l :<C-u> tabnext<CR>
+--   " Previous tab
+--   nnoremap <silent> [Tag]h :<C-u> tabprevious<CR>
+-- ]])
 vim.cmd([[
   " The prefix key.
   nnoremap    [Tag]   <Nop>
@@ -180,20 +199,42 @@ vim.cmd([[
   nmap    t [Tag]
   " t1 で1番左のタブ、t2 で1番左から2番目のタブにジャンプ
   for n in range(1, 9)
-    execute 'nnoremap <silent> [Tag]'.n  ':<C-u> BufferLineGoToBuffer'.n.'<CR>'
+    execute 'nnoremap <silent> [Tag]'.n  ':BufferLineGoToBuffer'.n.'<CR>'
   endfor
 
   " New tab (most right)
-  nnoremap <silent> [Tag]t :<C-u> enew<CR>
+  nnoremap <silent> [Tag]t :enew<CR>
   " Close tab
-  nnoremap <silent> [Tag]w :<C-u> BufferKill<CR>
+  nnoremap <silent> [Tag]w :bd<CR>
+  nnoremap <silent> [Tag]q :%bd<CR>
   " Next tab
-  nnoremap <silent> [Tag]l :<C-u> BufferLineCycleNext<CR>
+  nnoremap <silent> [Tag]l :BufferLineCycleNext<CR>
+  nnoremap <silent> [Tag]cl :exec BufferLineCloseRight__()<CR>
+  nnoremap <silent> [Tag]cu :exec BufferLineCloseExternal__()<CR>
+  nnoremap <silent> [Tag]n :tabnext<CR>
   " Previous tab
-  nnoremap <silent> [Tag]h :<C-u> BufferLineCyclePrev<CR>
+  nnoremap <silent> [Tag]h :BufferLineCyclePrev<CR>
+  nnoremap <silent> [Tag]ch :exec BufferLineCloseLeft__()<CR>
+  nnoremap <silent> [Tag]p :tabprevious<CR>
 
-  nnoremap <silent> <S-l> :<C-u> BufferLineMoveNext<CR>
-  nnoremap <silent> <S-h> :<C-u> BufferLineMovePrev<CR>
+  nnoremap <silent> <S-l> :BufferLineMoveNext<CR>
+  nnoremap <silent> <S-h> :BufferLineMovePrev<CR>
+
+  function! BufferLineCloseRight__()
+    :BufferLineCloseRight
+    :bd
+  endfunction
+
+  function! BufferLineCloseLeft__()
+    :BufferLineCloseLeft
+    :bd
+  endfunction
+
+  function! BufferLineCloseExternal__()
+    let buffers = filter(range(1, bufnr('$')), 'buflisted(v:val) && nvim_buf_get_name(v:val) !~ getcwd()')
+    if empty(buffers) | echo "No external buffer" | return | endif
+    exe 'bd '.join(buffers, ' ')
+  endfunction
 ]])
 
 -- Terminal
@@ -249,10 +290,18 @@ vim.cmd([[
 
 -- Diffview
 vim.cmd([[
-  nnoremap <silent> do :DiffviewOpen<CR>
+  nnoremap <silent> dv :DiffviewOpen -uno<CR>
   nnoremap <silent> dc :DiffviewClose<CR>
-  nnoremap <silent> d` :DiffviewToggleFiles<CR>
+  nnoremap <silent> dt :DiffviewToggleFiles<CR>
   nnoremap <silent> dh :DiffviewFileHistory<CR>
+]])
+
+-- Gitsigns
+vim.cmd([[
+  nnoremap <silent> gsh :Gitsigns preview_hunk<CR>
+  nnoremap <silent> gsn :Gitsigns next_hunk<CR>
+  nnoremap <silent> gsp :Gitsigns prev_hunk<CR>
+  nnoremap <silent> gsd :Gitsigns diffthis<CR>
 ]])
 
 ---------------------------------------------------------------------
@@ -274,17 +323,16 @@ lvim.plugins = {
   { 'hrsh7th/cmp-cmdline' },
   { 'junegunn/fzf', dir = '~/.fzf', run = './install --all' },
   { 'junegunn/fzf.vim' },
-  { "sindrets/diffview.nvim", event = "BufRead", },
+  { "sindrets/diffview.nvim" },
 }
 
 -- Activation for Core Plugins
 lvim.builtin.alpha.active = false
 lvim.builtin.which_key.active = false
-lvim.builtin.bufferline.active = true
 lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
-
 lvim.builtin.lualine.active = true
+lvim.builtin.bufferline.active = true
 
 -- StatusLine
 -- vim.cmd([[
@@ -383,6 +431,16 @@ lvim.builtin.cmp.mapping["<C-k>"] = function() end
 --     { name = 'cmdline' }
 --   })
 -- })
+
+-- Diffview
+require("diffview").setup({
+  hooks = {
+    diff_buf_read = function(bufnr)
+      -- Change local options in diff buffers
+      vim.opt_local.wrap = false
+    end
+  }
+})
 
 -- Project
 lvim.builtin.project.manual_mode = true
@@ -601,6 +659,7 @@ vim.cmd([[
   let g:fzf_preview_window = ['right:56%', 'ctrl-/']
   let g:fzf_action = {
     \ 'enter': 'edit',
+    \ 'ctrl-e': 'tab drop',
     \ 'ctrl-s': 'split',
     \ 'ctrl-v': 'vsplit' }
   let g:fzf_colors =
