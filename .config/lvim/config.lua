@@ -12,6 +12,7 @@ an executable
 -- Fundamentals
 ---------------------------------------------------------------------
 -- vim
+vim.opt.termguicolors = true -- Enables 24-bit RGB color in the TUI.
 vim.opt.background = "dark" -- tell vim what the background color looks like
 vim.opt.backspace = "start,eol,indent"
 vim.opt.clipboard = "unnamedplus" -- Copy paste between vim and everything else

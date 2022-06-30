@@ -58,6 +58,7 @@ alias home='cd "/mnt/c/Users/ShimauchiDaisuke"'
 alias open='/mnt/c/Windows/explorer.exe'
 alias kh='vi "/mnt/c/Users/ShimauchiDaisuke/OneDrive - Bugless Co., Ltd/download/keyhac_182/config.py"'
 alias pf='vi "/mnt/c/Users/ShimauchiDaisuke/TaskSchedule/port-forwarding.ps1"'
+alias dls='lvim --headless +"lua require(\"lvim.utils\").generate_settings()" +qa && sort -o lv-settings.lua{,} && mv lv-settings.lua /tmp/.'
 
 #alias x='xterm -geometry 100x30'
 #alias ag='ag --nocolor' 
