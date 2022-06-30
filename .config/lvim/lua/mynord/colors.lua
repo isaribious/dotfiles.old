@@ -19,10 +19,13 @@ local dark_colors = {
   nord14_gui = named_colors.green, -- nord14 in palette
   nord15_gui = named_colors.purple, -- nord15 in palette
 
-  nord16_gui = "#ff2255",
-  nord17_gui = "#01A1C1",
-  nord18_gui = "#686868",
-  nord19_gui = "#baaa8e",
+  user01_gui = "#ff2255",
+  user02_gui = "#686868",
+  user03_gui = "#556c67",
+  user05_gui = "#6f575b",
+  user04_gui = "#383838",
+  user06_gui = "#967e82",
+  user07_gui = "#96917e",
 
   none = "NONE",
 }

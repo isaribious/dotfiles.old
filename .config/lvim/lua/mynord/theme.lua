@@ -15,12 +15,12 @@ theme.loadSyntax = function()
     Boolean = { fg = nord.nord9_gui }, -- a boolean constant: TRUE, false
     Float = { fg = nord.nord15_gui }, -- a floating point constant: 2.3e10
     -- Statement = { fg = nord.nord9_gui }, -- any statement
-    -- Statement = { fg = nord.nord16_gui }, -- any statement
+    -- Statement = { fg = nord.user01_gui }, -- any statement
     Statement = { fg = nord.nord7_gui }, -- any statement
     Label = { fg = nord.nord9_gui }, -- case, default, etc.
     Operator = { fg = nord.nord9_gui }, -- sizeof", "+", "*", etc.
     -- Exception = { fg = nord.nord9_gui }, -- try, catch, throw
-    -- Exception = { fg = nord.nord16_gui }, -- try, catch, throw
+    -- Exception = { fg = nord.user01_gui }, -- try, catch, throw
     Exception = { fg = nord.nord9_gui }, -- try, catch, throw
     -- PreProc = { fg = nord.nord9_gui }, -- generic Preprocessor
     PreProc = { fg = nord.nord9_gui }, -- FZF: matching numbers
@@ -89,10 +89,14 @@ theme.loadEditor = function()
     Cursor = { fg = nord.nord4_gui, bg = nord.none, style = "reverse" }, -- the character under the cursor
     CursorIM = { fg = nord.nord5_gui, bg = nord.none, style = "reverse" }, -- like Cursor, but used when in IME mode
     Directory = { fg = nord.nord7_gui, bg = nord.none }, -- directory names (and other special names in listings)
-    DiffAdd = { fg = nord.nord14_gui, bg = nord.none, style = "reverse" }, -- diff mode: Added line
-    DiffChange = { fg = nord.nord13_gui, bg = nord.none, style = "reverse" }, --  diff mode: Changed line
-    DiffDelete = { fg = nord.nord11_gui, bg = nord.none, style = "reverse" }, -- diff mode: Deleted line
-    DiffText = { fg = nord.nord15_gui, bg = nord.none, style = "reverse" }, -- diff mode: Changed text within a changed line
+    -- DiffAdd = { fg = nord.nord14_gui, bg = nord.none, style = "reverse" }, -- diff mode: Added line
+    -- DiffChange = { fg = nord.nord13_gui, bg = nord.none, style = "reverse" }, --  diff mode: Changed line
+    -- DiffDelete = { fg = nord.nord11_gui, bg = nord.none, style = "reverse" }, -- diff mode: Deleted line
+    -- DiffText = { fg = nord.nord15_gui, bg = nord.none, style = "reverse" }, -- diff mode: Changed text within a changed line
+    DiffAdd = { fg = nord.user03_gui, bg = nord.nord4_gui, style = "reverse" }, -- diff mode: Added line
+    DiffChange = { fg = nord.user05_gui, bg = nord.nord4_gui, style = "reverse" }, --  diff mode: Changed line
+    DiffDelete = { fg = nord.user04_gui, bg = nord.nord3_gui, style = "reverse" }, -- diff mode: Deleted line
+    DiffText = { fg = nord.nord3_gui_bright, bg = nord.nord4_gui, style = "reverse" }, -- diff mode: Changed text within a changed line
     EndOfBuffer = { fg = nord.nord1_gui },
     ErrorMsg = { fg = nord.none },
     Folded = { fg = nord.nord3_gui_bright, bg = nord.none, style = "italic" },
@@ -105,7 +109,8 @@ theme.loadEditor = function()
     ModeMsg = { fg = nord.nord4_gui },
     MoreMsg = { fg = nord.nord4_gui },
     -- NonText = { fg = nord.nord1_gui },
-    NonText = { fg = nord.nord3_gui_bright },
+    -- NonText = { fg = nord.nord3_gui_bright },
+    NonText = { fg = nord.none },
     Pmenu = { fg = nord.nord4_gui, bg = nord.nord2_gui },
     PmenuSel = { fg = nord.nord4_gui, bg = nord.nord10_gui },
     PmenuSbar = { fg = nord.nord4_gui, bg = nord.nord2_gui },
@@ -251,7 +256,7 @@ theme.loadTreeSitter = function()
   -- TreeSitter highlight groups
 
   local treesitter = {
-    TSAnnotation = { fg = nord.nord12_gui }, -- For C++/Dart attributes, annotations thatcan be attached to the code to denote some kind of meta information.
+    TSAnnotation = { fg = nord.nord12_gui }, -- For C++/Dart attributes, annotations that can be attached to the code to denote some kind of meta information.
     TSConstructor = { fg = nord.nord9_gui }, -- For constructor calls and definitions: `= { }` in Lua, and Java constructors.
     -- TSConstant = { fg = nord.nord13_gui }, -- For constants
     TSConstant = { fg = nord.nord4_gui }, -- For constants
@@ -261,7 +266,8 @@ theme.loadTreeSitter = function()
     TSAttribute = { fg = nord.nord15_gui }, -- (unstable) TODO: docs
     TSVariable = { fg = nord.nord4_gui, style = "bold" }, -- Any variable name that does not have another highlight.
     TSVariableBuiltin = { fg = nord.nord4_gui, style = "bold" },
-    TSBoolean = { fg = nord.nord9_gui, style = "bold" }, -- For booleans.
+    -- TSBoolean = { fg = nord.nord9_gui, style = "bold" }, -- For booleans.
+    TSBoolean = { fg = nord.nord15_gui, style = "bold" }, -- For booleans.
     -- TSConstBuiltin = { fg = nord.nord7_gui, style = "bold" }, -- For constant that are built in the language: `nil` in Lua.
     TSConstBuiltin = { fg = nord.nord15_gui, style = "bold" }, -- For constant that are built in the language: `nil` in Lua.
     TSConstMacro = { fg = nord.nord7_gui, style = "bold" }, -- For constants that are defined by macros: `NULL` in C.
@@ -292,7 +298,6 @@ theme.loadTreeSitter = function()
     TSTitle = { fg = nord.nord10_gui, bg = nord.none, style = "bold" }, -- Text that is part of a title.
     TSLiteral = { fg = nord.nord4_gui }, -- Literal text.
     TSURI = { fg = nord.nord14_gui }, -- Any URI like a link or email.
-    TSAnnotation = { fg = nord.nord11_gui }, -- For C++/Dart attributes, annotations that can be attached to the code to denote some kind of meta information.
   }
 
   if vim.g.nord_italic == false then
@@ -460,7 +465,7 @@ theme.loadPlugins = function()
     -- TelescopeSelection = { fg = nord.nord9_gui },
     TelescopeSelection = { fg = nord.nord8_gui, bg = nord.nord0_gui },
     -- TelescopeMatching = { fg = nord.nord8_gui },
-    TelescopeMatching = { fg = nord.nord18_gui },
+    TelescopeMatching = { fg = nord.user02_gui },
 
     -- NvimTree
     NvimTreeRootFolder = { fg = nord.nord7_gui, style = "bold" },

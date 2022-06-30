@@ -206,15 +206,17 @@ vim.cmd([[
   nnoremap <silent> [Tag]t :enew<CR>
   " Close tab
   nnoremap <silent> [Tag]w :bd<CR>
-  nnoremap <silent> [Tag]q :%bd<CR>
+  nnoremap <silent> [Tag]W :%bd<CR>
   " Next tab
   nnoremap <silent> [Tag]l :BufferLineCycleNext<CR>
-  nnoremap <silent> [Tag]cl :exec BufferLineCloseRight__()<CR>
-  nnoremap <silent> [Tag]cu :exec BufferLineCloseExternal__()<CR>
+  nnoremap <silent> [Tag]cl :BufferLineCloseRight<CR>
+  nnoremap <silent> [Tag]cL :exec BufferLineCloseRight__()<CR>
+  nnoremap <silent> [Tag]q :exec BufferLineCloseExternal__()<CR>
   nnoremap <silent> [Tag]n :tabnext<CR>
   " Previous tab
   nnoremap <silent> [Tag]h :BufferLineCyclePrev<CR>
-  nnoremap <silent> [Tag]ch :exec BufferLineCloseLeft__()<CR>
+  nnoremap <silent> [Tag]ch :BufferLineCloseLeft<CR>
+  nnoremap <silent> [Tag]cH :exec BufferLineCloseLeft__()<CR>
   nnoremap <silent> [Tag]p :tabprevious<CR>
 
   nnoremap <silent> <S-l> :BufferLineMoveNext<CR>
@@ -290,8 +292,8 @@ vim.cmd([[
 
 -- Diffview
 vim.cmd([[
-  nnoremap <silent> dv :DiffviewOpen -uno<CR>
-  nnoremap <silent> dc :DiffviewClose<CR>
+  nnoremap <silent> df :DiffviewOpen -uno<CR>
+  nnoremap <silent> dq :DiffviewClose<CR>
   nnoremap <silent> dt :DiffviewToggleFiles<CR>
   nnoremap <silent> dh :DiffviewFileHistory<CR>
 ]])
