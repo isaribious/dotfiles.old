@@ -71,11 +71,11 @@ lvim.transparent_window = true
 lvim.keys.normal_mode["<C-w>"] = "<C-w>"
 -- lvim.keys.normal_mode["<S-h>"] = nil
 -- lvim.keys.normal_mode["<S-l>"] = nil
-lvim.keys.insert_mode["jj"] = nil
-lvim.keys.insert_mode["kj"] = nil
-lvim.keys.insert_mode["jk"] = nil
-lvim.keys.visual_mode["<"] = nil
-lvim.keys.visual_mode[">"] = nil
+lvim.keys.insert_mode["jj"] = { nil, { silent = true, noremap = false } }
+lvim.keys.insert_mode["kj"] = { nil, { silent = true, noremap = false } }
+lvim.keys.insert_mode["jk"] = { nil, { silent = true, noremap = false } }
+lvim.keys.visual_mode["<"] = { nil, { silent = true, noremap = false } }
+lvim.keys.visual_mode[">"] = { nil, { silent = true, noremap = false } }
 -- lvim.keys.normal_mode["<leader>q"] = ""
 
 -- set leader key
