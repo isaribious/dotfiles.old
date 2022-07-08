@@ -173,6 +173,11 @@ vim.cmd([[
   command! W w !sudo tee > /dev/null %
 ]])
 
+-- Jump last edit
+vim.cmd([[
+  nnoremap <silent> `` `.
+]])
+
 -- Tab
 -- vim.cmd([[
 --   " The prefix key.
@@ -211,13 +216,13 @@ vim.cmd([[
   " Next tab
   nnoremap <silent> [Tag]l :BufferLineCycleNext<CR>
   nnoremap <silent> [Tag]cl :BufferLineCloseRight<CR>
-  nnoremap <silent> [Tag]cL :exec BufferLineCloseRight__()<CR>
-  nnoremap <silent> [Tag]q :exec BufferLineCloseExternal__()<CR>
+  nnoremap <silent> [Tag]cL :call BufferLineCloseRight__()<CR>
+  nnoremap <silent> [Tag]q :call BufferLineCloseExternal__()<CR>
   nnoremap <silent> [Tag]n :tabnext<CR>
   " Previous tab
   nnoremap <silent> [Tag]h :BufferLineCyclePrev<CR>
   nnoremap <silent> [Tag]ch :BufferLineCloseLeft<CR>
-  nnoremap <silent> [Tag]cH :exec BufferLineCloseLeft__()<CR>
+  nnoremap <silent> [Tag]cH :call BufferLineCloseLeft__()<CR>
   nnoremap <silent> [Tag]p :tabprevious<CR>
 
   nnoremap <silent> <S-l> :BufferLineMoveNext<CR>
@@ -236,7 +241,7 @@ vim.cmd([[
   function! BufferLineCloseExternal__()
     let buffers = filter(range(1, bufnr('$')), 'buflisted(v:val) && nvim_buf_get_name(v:val) !~ getcwd()')
     if empty(buffers) | echo "No external buffer" | return | endif
-    exe 'bd '.join(buffers, ' ')
+    :execute 'bd '.join(buffers, ' ')
   endfunction
 ]])
 
@@ -288,13 +293,13 @@ vim.cmd([[
 
 -- Nvim Tree
 vim.cmd([[
-  nnoremap <silent> `` :NvimTreeToggle<CR>
+  nnoremap <silent> <Leader>` :NvimTreeToggle<CR>
 ]])
 
 -- Diffview
 vim.cmd([[
-  nnoremap <silent> df :DiffviewOpen -uno<CR>
-  nnoremap <silent> dq :DiffviewClose<CR>
+  nnoremap <silent> do :DiffviewOpen -uno<CR>
+  nnoremap <silent> dc :DiffviewClose<CR>
   nnoremap <silent> dt :DiffviewToggleFiles<CR>
   nnoremap <silent> dh :DiffviewFileHistory<CR>
 ]])
@@ -566,7 +571,7 @@ lvim.lsp.on_attach_callback = function(client, bufnr)
   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   buf_set_keymap('n', 'gl', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>a', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+  buf_set_keymap('n', 'gh', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
   buf_set_keymap('n', 'gp', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', 'gn', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
   -- buf_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
