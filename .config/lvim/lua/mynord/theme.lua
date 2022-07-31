@@ -93,8 +93,8 @@ theme.loadEditor = function()
     -- DiffChange = { fg = nord.nord13_gui, bg = nord.none, style = "reverse" }, --  diff mode: Changed line
     -- DiffDelete = { fg = nord.nord11_gui, bg = nord.none, style = "reverse" }, -- diff mode: Deleted line
     -- DiffText = { fg = nord.nord15_gui, bg = nord.none, style = "reverse" }, -- diff mode: Changed text within a changed line
-    DiffAdd = { fg = nord.user03_gui, bg = nord.nord4_gui, style = "reverse" }, -- diff mode: Added line
-    DiffChange = { fg = nord.user05_gui, bg = nord.nord4_gui, style = "reverse" }, --  diff mode: Changed line
+    DiffAdd = { fg = nord.nord4_gui, bg = nord.user03_gui }, -- diff mode: Added line
+    DiffChange = { fg = nord.nord4_gui, bg = nord.user05_gui }, --  diff mode: Changed line
     DiffDelete = { fg = nord.user04_gui, bg = nord.nord3_gui, style = "reverse" }, -- diff mode: Deleted line
     DiffText = { fg = nord.nord3_gui_bright, bg = nord.nord4_gui, style = "reverse" }, -- diff mode: Changed text within a changed line
     EndOfBuffer = { fg = nord.nord1_gui },
