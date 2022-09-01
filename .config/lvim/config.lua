@@ -309,6 +309,10 @@ vim.cmd([[
   nnoremap <silent> gsh :Gitsigns preview_hunk<CR>
   nnoremap <silent> gsn :Gitsigns next_hunk<CR>
   nnoremap <silent> gsp :Gitsigns prev_hunk<CR>
+  nnoremap <silent> gsr :Gitsigns reset_hunk<CR>
+  nnoremap <silent> gss :Gitsigns stage_hunk<CR>
+  nnoremap <silent> gsa :Gitsigns stage_buffer<CR>
+  nnoremap <silent> gsu :Gitsigns undo_stage_hunk<CR>
   nnoremap <silent> gsd :Gitsigns diffthis<CR>
 ]])
 
@@ -697,7 +701,10 @@ vim.cmd([[
         if empty(l:path)
             let l:path = "."
         endif
-        call fzf#vim#grep("rg --column --line-number --no-heading -uu --smart-case .+", 1, {'dir': l:path}, a:isFullScreen)
+        call fzf#vim#grep("rg --column --line-number --no-heading -uu --smart-case .+",
+          \ 1,
+          \ fzf#vim#with_preview({'dir': l:path}),
+          \ a:isFullScreen)
     endfunction
 
     command! -bang -nargs=? -complete=dir Rg call RgDir(<bang>0, <q-args>)
