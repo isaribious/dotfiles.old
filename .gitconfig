@@ -15,3 +15,10 @@
 [color "grep"]
     match = 220           # dark yellow
     separator = bold 099  # purple
+[merge]
+	ff = false
+[pull]
+	ff = only
+[alias]
+    st = status
+    co = commit
