@@ -198,6 +198,17 @@ vim.cmd([[
 --   " Previous tab
 --   nnoremap <silent> [Tag]h :<C-u> tabprevious<CR>
 -- ]])
+function _G.getbufid(n)
+  local lazy = require("bufferline.lazy")
+  local utils = lazy.require("bufferline.utils")
+  local buf_nums = utils.get_valid_buffers()
+  for i, buf_id in ipairs(buf_nums) do
+    if i == n then
+      return buf_id
+    end
+  end
+end
+
 vim.cmd([[
   " The prefix key.
   nnoremap    [Tag]   <Nop>
@@ -205,7 +216,7 @@ vim.cmd([[
   nmap    t [Tag]
   " t1 で1番左のタブ、t2 で1番左から2番目のタブにジャンプ
   for n in range(1, 9)
-    execute 'nnoremap <silent> [Tag]'.n  ':BufferLineGoToBuffer'.n.'<CR>'
+    execute 'nnoremap <silent> [Tag]'.n  ':call BufferLineGoToBuffer__('.n.')<CR>'
   endfor
 
   " New tab (most right)
@@ -242,6 +253,12 @@ vim.cmd([[
     let buffers = filter(range(1, bufnr('$')), 'buflisted(v:val) && nvim_buf_get_name(v:val) !~ getcwd()')
     if empty(buffers) | echo "No external buffer" | return | endif
     :execute 'bd '.join(buffers, ' ')
+  endfunction
+
+  function! BufferLineGoToBuffer__(num)
+    let n = v:lua.getbufid(a:num)
+    if n == v:null | return | endif
+    :execute 'b'.n
   endfunction
 ]])
 
