@@ -329,7 +329,7 @@ vim.cmd([[
 vim.cmd([[
   nnoremap <silent> <Leader>f :Files<CR>
   nnoremap <silent> <Leader>g :Rg<CR>
-  nnoremap <silent> <Leader>\ :Buffers<CR>
+  nnoremap <silent> <Leader>t :Buffers<CR>
   nnoremap <silent> <Leader>, :Files ~/.config/lvim<CR>
   nnoremap <silent> <Leader>. :Files ~/.local/share/lunarvim<CR>
   nnoremap FF :Files 
