@@ -198,10 +198,38 @@ vim.cmd([[
 --   " Previous tab
 --   nnoremap <silent> [Tag]h :<C-u> tabprevious<CR>
 -- ]])
+local function get_updated_buffers(buf_nums, sorted)
+  local lazy = require("bufferline.lazy")
+  local utils = lazy.require("bufferline.utils")
+
+  if not sorted then
+    return buf_nums
+  end
+  local nums = { unpack(buf_nums) }
+  local reverse_lookup_sorted = utils.tbl_reverse_lookup(sorted)
+
+  --- a comparator that sorts buffers by their position in sorted
+  local sort_by_sorted = function(buf_id_1, buf_id_2)
+    local buf_1_rank = reverse_lookup_sorted[buf_id_1]
+    local buf_2_rank = reverse_lookup_sorted[buf_id_2]
+    if not buf_1_rank then
+      return false
+    end
+    if not buf_2_rank then
+      return true
+    end
+    return buf_1_rank < buf_2_rank
+  end
+  table.sort(nums, sort_by_sorted)
+  return nums
+end
+
 function _G.getbufid(n)
   local lazy = require("bufferline.lazy")
   local utils = lazy.require("bufferline.utils")
+  local state = lazy.require("bufferline.state")
   local buf_nums = utils.get_valid_buffers()
+  buf_nums = get_updated_buffers(buf_nums, state.custom_sort)
   for i, buf_id in ipairs(buf_nums) do
     if i == n then
       return buf_id
